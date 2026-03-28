@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AimHigh – Law (H415)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c10;--s1:#141418;--s2:#1a1a21;--s3:#22222c;
+  --bord:#2e2e3a;--acc:#c8a84b;--acc2:#7c6fcf;
+  --tx:#e6e6f0;--t2:#8888a0;--t3:#50505f;
+  --red:#e05555;--grn:#4caf82;--amb:#e09a3c;--pur:#9b8fe0;
+  --r:9px;--rl:13px;
+}
+html,body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.55;min-height:100vh}
+*:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#shell{display:flex;min-height:100vh}
+#sidebar{width:220px;background:var(--s1);border-right:1px solid var(--bord);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+#content{flex:1;min-width:0;overflow:auto}
+.pg{display:none;padding:20px;max-width:900px;margin:0 auto}
+.pg.on{display:block}
+#mob-nav{display:none;position:sticky;top:0;z-index:20;background:var(--s1);border-bottom:1px solid var(--bord);overflow-x:auto;white-space:nowrap}
+#mob-inner{display:inline-flex;min-width:100%;padding:0 4px}
+.mni{display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:9px 11px;font-size:10px;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;flex-shrink:0}
+.mni.on{color:var(--acc);border-bottom-color:var(--acc)}
+.logo{padding:16px;border-bottom:1px solid var(--bord)}
+.logo-t{font-size:13px;font-weight:700;color:var(--acc)}
+.logo-s{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-top:2px}
+.snav{padding:6px 0;flex:1}
+.sns{padding:4px 14px 2px;font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
+.sni{display:flex;align-items:center;gap:8px;padding:7px 14px;font-size:12.5px;color:var(--t2);cursor:pointer;border-left:3px solid transparent;transition:.12s}
+.sni:hover{color:var(--tx);background:var(--s2)}
+.sni.on{color:var(--acc);border-left-color:var(--acc);background:rgba(200,168,75,.07)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bord);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.tb-t{font-size:16px;font-weight:600}
+.card{background:var(--s1);border:1px solid var(--bord);border-radius:var(--rl);padding:16px}
+.card.cp{cursor:pointer;transition:border-color .15s}
+.card.cp:hover{border-color:var(--acc)}
+.card.hi{border-color:var(--acc);background:rgba(200,168,75,.05)}
+.card.pur{border-color:var(--acc2);background:rgba(124,111,207,.05)}
+.card.grn{border-color:var(--grn);background:rgba(76,175,130,.05)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.h2{font-size:17px;font-weight:600;margin-bottom:10px}
+.h3{font-size:14px;font-weight:600;margin-bottom:7px}
+.lbl{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-bottom:4px}
+.muted{color:var(--t2)}
+.sm{font-size:12.5px}
+.xs{font-size:11px}
+.mt{margin-top:14px}
+.mb{margin-bottom:14px}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.b-gld{background:rgba(200,168,75,.18);color:var(--acc)}
+.b-pur{background:rgba(124,111,207,.18);color:var(--pur)}
+.b-grn{background:rgba(76,175,130,.15);color:var(--grn)}
+.b-red{background:rgba(224,85,85,.15);color:var(--red)}
+.b-amb{background:rgba(224,154,60,.15);color:var(--amb)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r);font-size:13px;font-weight:500;border:none;cursor:pointer;font-family:inherit;transition:.12s;min-height:38px}
+.btn-p{background:var(--acc);color:#111}
+.btn-p:hover{opacity:.88}
+.btn-g{background:transparent;color:var(--t2);border:1px solid var(--bord)}
+.btn-g:hover{color:var(--tx);background:var(--s2)}
+.btn-grn{background:var(--grn);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-pur{background:var(--acc2);color:#fff}
+.btn-s{padding:6px 12px;font-size:12px;min-height:32px}
+.btn-xs{padding:4px 9px;font-size:11px;min-height:26px}
+.bg{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+input,select,textarea{background:var(--s2);border:1px solid var(--bord);border-radius:var(--r);color:var(--tx);font-family:inherit;font-size:13px;padding:8px 11px;width:100%;outline:none;transition:border-color .12s;min-height:38px}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:160px;line-height:1.65}
+label{font-size:11px;color:var(--t2);display:block;margin-bottom:3px}
+.fg{margin-bottom:12px}
+hr{border:none;border-top:1px solid var(--bord);margin:14px 0}
+.stat{text-align:center;padding:12px 8px}
+.stn{font-size:26px;font-weight:700;color:var(--acc);line-height:1}
+.stl{font-size:10px;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.fc-wrap{perspective:1200px;max-width:500px;margin:0 auto}
+.fc{width:100%;min-height:180px;position:relative;transform-style:preserve-3d;transition:transform .4s;cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.fc-f{position:absolute;width:100%;min-height:180px;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--s1);border:1px solid var(--bord);border-radius:var(--rl);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.fc-f.bk{transform:rotateY(180deg);border-color:var(--acc)}
+.qo{display:block;width:100%;text-align:left;background:var(--s2);border:1px solid var(--bord);border-radius:var(--r);padding:10px 13px;color:var(--tx);font-size:13.5px;margin-bottom:7px;cursor:pointer;font-family:inherit;transition:.12s;min-height:42px}
+.qo:hover:not(:disabled){border-color:var(--acc)}
+.qo.ok{border-color:var(--grn);background:rgba(76,175,130,.1);color:var(--grn)}
+.qo.no{border-color:var(--red);background:rgba(224,85,85,.1);color:var(--red)}
+.ms{border-radius:var(--r);padding:12px 14px;margin-bottom:9px}
+.ms .st{font-size:10px;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;font-weight:600}
+.ms.str{background:rgba(76,175,130,.09);border:1px solid rgba(76,175,130,.25)}
+.ms.str .st{color:var(--grn)}
+.ms.wk{background:rgba(224,85,85,.09);border:1px solid rgba(224,85,85,.25)}
+.ms.wk .st{color:var(--red)}
+.ms.om{background:rgba(224,154,60,.09);border:1px solid rgba(224,154,60,.25)}
+.ms.om .st{color:var(--amb)}
+.ms.nx{background:rgba(124,111,207,.09);border:1px solid rgba(124,111,207,.25)}
+.ms.nx .st{color:var(--pur)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--bord);margin-bottom:14px;overflow-x:auto}
+.tab{padding:8px 13px;font-size:12.5px;color:var(--t2);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.tab.on{color:var(--acc);border-bottom-color:var(--acc)}
+.pb{background:var(--s3);border-radius:3px;height:5px;overflow:hidden}
+.pf{height:100%;background:var(--acc);border-radius:3px;transition:width .4s}
+.scenario{background:var(--s2);border-left:3px solid var(--acc);padding:13px 15px;font-size:13px;line-height:1.7;margin-bottom:13px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bord);border-radius:5px;padding:4px 9px;margin:3px;font-size:12px}
+.pill em{color:var(--acc);font-style:italic}
+.flash{position:fixed;top:14px;right:14px;z-index:999;background:var(--grn);color:#fff;padding:9px 16px;border-radius:var(--r);font-size:13px;opacity:0;transform:translateY(-6px);transition:.25s;pointer-events:none}
+.flash.on{opacity:1;transform:none}
+.grade{font-size:50px;font-weight:700;text-align:center;padding:12px 0;line-height:1}
+.sdiv{display:flex;align-items:center;gap:10px;margin:16px 0 10px}
+.sdiv .sl{font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.sdiv::after{content:'';flex:1;height:1px;background:var(--bord)}
+.qa-row{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;background:var(--s2);border-radius:var(--r);border:1px solid var(--bord);cursor:pointer;margin-bottom:6px}
+.qa-row:hover{border-color:var(--acc)}
+.rbar{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.rbar-fill{flex:1;height:7px;background:var(--s3);border-radius:3px;overflow:hidden}
+.rbar-in{height:100%;border-radius:3px}
+.heat-grid{display:grid;gap:3px;grid-template-columns:repeat(8,1fr);margin-bottom:6px}
+.heat-cell{aspect-ratio:1;border-radius:3px;background:var(--s3)}
+.wrow{display:grid;grid-template-columns:52px repeat(7,1fr);gap:3px;margin-bottom:3px}
+.dc{min-height:48px;border-radius:5px;border:1px solid var(--bord);padding:4px;font-size:9px;background:var(--s1);cursor:pointer}
+.dc.hs{border-color:var(--acc);background:rgba(200,168,75,.07)}
+.dc.dn{border-color:var(--grn);background:rgba(76,175,130,.07)}
+.dc.od{border-color:var(--red);background:rgba(224,85,85,.07)}
+.dc.td{border-color:var(--acc2)}
+.wl{font-size:9px;color:var(--t3);display:flex;align-items:center}
+.dl{font-size:9px;color:var(--t3);text-align:center;padding:3px 0}
+.onboard-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.onboard-box{background:var(--s1);border:1px solid var(--bord);border-radius:var(--rl);padding:28px;max-width:480px;width:100%}
+.onboard-step{display:none}
+.onboard-step.on{display:block}
+.session-summary{background:var(--s2);border:1px solid var(--acc);border-radius:var(--rl);padding:16px;margin-bottom:14px}
+.drill-q{font-size:18px;font-weight:600;text-align:center;padding:20px;line-height:1.4}
+.drill-reveal{background:var(--s2);border-radius:var(--r);padding:14px;margin-top:12px;font-size:13.5px;line-height:1.7;color:var(--t2)}
+@media(max-width:680px){
+  #sidebar{display:none}
+  #mob-nav{display:block}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .g2.k2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g4.k4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg{padding:12px}
+  .wrow{grid-template-columns:36px repeat(7,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="shell">
+<aside id="sidebar">
+  <div class="logo"><div class="logo-t">AimHigh</div><div class="logo-s">Law · OCR H415</div></div>
+  <nav class="snav">
+    <div class="sns">Study</div>
+    <div class="sni on" onclick="go('dash')">⊞ Dashboard</div>
+    <div class="sni" onclick="go('topics')">☰ Topics</div>
+    <div class="sni" onclick="go('drill')">⚡ Quick-fire Drill</div>
+    <div class="sni" onclick="go('recall')">⟳ Recall <span id="sb-due" class="badge b-amb" style="margin-left:auto;display:none"></span></div>
+    <div class="sni" onclick="go('quiz')">✦ Quiz</div>
+    <div class="sns">Apply</div>
+    <div class="sni" onclick="go('scenario')">⚖ Scenario</div>
+    <div class="sni" onclick="go('essay')">✎ Essay Builder</div>
+    <div class="sns">Write &amp; Mark</div>
+    <div class="sni" onclick="go('write')">⌨ Write</div>
+    <div class="sni" onclick="go('mark')">◎ Mark</div>
+    <div class="sns">Plan</div>
+    <div class="sni" onclick="go('planner')">▦ Planner</div>
+    <div class="sni" onclick="go('progress')">▲ Progress</div>
+  </nav>
+</aside>
+
+<div id="mob-nav"><div id="mob-inner">
+  <div class="mni on" onclick="go('dash')"><span style="font-size:16px">⊞</span>Home</div>
+  <div class="mni" onclick="go('topics')"><span style="font-size:16px">☰</span>Topics</div>
+  <div class="mni" onclick="go('drill')"><span style="font-size:16px">⚡</span>Drill</div>
+  <div class="mni" onclick="go('recall')"><span style="font-size:16px">⟳</span>Recall</div>
+  <div class="mni" onclick="go('quiz')"><span style="font-size:16px">✦</span>Quiz</div>
+  <div class="mni" onclick="go('scenario')"><span style="font-size:16px">⚖</span>Scenario</div>
+  <div class="mni" onclick="go('essay')"><span style="font-size:16px">✎</span>Essay</div>
+  <div class="mni" onclick="go('write')"><span style="font-size:16px">⌨</span>Write</div>
+  <div class="mni" onclick="go('mark')"><span style="font-size:16px">◎</span>Mark</div>
+  <div class="mni" onclick="go('planner')"><span style="font-size:16px">▦</span>Plan</div>
+  <div class="mni" onclick="go('progress')"><span style="font-size:16px">▲</span>Progress</div>
+</div></div>
+
+<div id="content">
+
+<!-- ONBOARDING -->
+<div id="onboard" class="onboard-overlay" style="display:none">
+  <div class="onboard-box">
+    <div class="onboard-step on" id="ob1">
+      <div class="h2" style="color:var(--acc)">Welcome to AimHigh Law</div>
+      <div class="sm muted mb" style="margin-top:6px;line-height:1.7">All six topics covered. Everything saves to your browser automatically. Start anywhere — or set your exam date to build a revision plan.</div>
+      <div class="mt">
+        <div style="padding:10px 13px;background:var(--s2);border-radius:var(--r);margin-bottom:8px;font-size:13px">⚡ <strong>Quick-fire Drill</strong> — case name to principle in under 10 mins</div>
+        <div style="padding:10px 13px;background:var(--s2);border-radius:var(--r);margin-bottom:8px;font-size:13px">⟳ <strong>Recall</strong> — spaced repetition flashcards (SRS)</div>
+        <div style="padding:10px 13px;background:var(--s2);border-radius:var(--r);margin-bottom:8px;font-size:13px">⚖ <strong>Scenario</strong> — problem question practice with IRAC guidance</div>
+        <div style="padding:10px 13px;background:var(--s2);border-radius:var(--r);font-size:13px">◎ <strong>Mark</strong> — paste any answer and get structured feedback</div>
+      </div>
+      <button class="btn btn-p mt" onclick="nextOb()">Get started →</button>
+    </div>
+    <div class="onboard-step" id="ob2">
+      <div class="h2">Set your exam date</div>
+      <div class="sm muted mb" style="margin-top:6px">This builds your revision plan automatically.</div>
+      <div class="fg mt"><label>Exam date</label><input type="date" id="ob-date"></div>
+      <div class="fg"><label>Study days per week</label>
+        <select id="ob-days"><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option></select>
+      </div>
+      <div class="fg"><label>Topic confidence</label><div id="ob-strength"></div></div>
+      <div class="bg">
+        <button class="btn btn-p" onclick="finishOb()">Build my plan →</button>
+        <button class="btn btn-g btn-s" onclick="closeOb()">Skip for now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pg-dash" class="pg on">
+  <div class="topbar"><div class="tb-t">Dashboard</div><div id="exam-top" class="xs muted"></div></div>
+  <div style="padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div><div style="font-size:20px;font-weight:700">Good day.</div><div class="xs muted" id="dash-sub">Set your exam date to begin.</div></div>
+    </div>
+    <div class="g4 k4 mb">
+      <div class="card stat"><div class="stn" id="s-days">—</div><div class="stl">Days left</div></div>
+      <div class="card stat"><div class="stn" id="s-rdy">—</div><div class="stl">Readiness</div></div>
+      <div class="card stat"><div class="stn" id="s-streak">0</div><div class="stl">Day streak</div></div>
+      <div class="card stat"><div class="stn" id="s-due">0</div><div class="stl">Cards due</div></div>
+    </div>
+    <div class="card hi mb" id="today-card"><div class="lbl">Study today</div><div class="muted sm mt">Set your exam date in the Planner.</div></div>
+    <div id="sess-summary" style="display:none"></div>
+    <div id="due-banner" style="display:none" class="card grn mb"></div>
+    <div class="sdiv"><span class="sl">Quick actions</span></div>
+    <div id="quick-acts" class="mb"></div>
+    <div class="sdiv"><span class="sl">Topic mastery</span></div>
+    <div id="mastery-radar" class="mb"></div>
+    <div class="sdiv"><span class="sl">Topics</span></div>
+    <div class="g2" id="dash-topics"></div>
+  </div>
+</div>
+
+<!-- TOPICS -->
+<div id="pg-topics" class="pg">
+  <div class="topbar"><div class="tb-t">Topics</div></div>
+  <div style="padding:20px"><div class="g2" id="topic-grid"></div></div>
+</div>
+
+<!-- TOPIC DETAIL -->
+<div id="pg-detail" class="pg">
+  <div class="topbar">
+    <div><div class="tb-t" id="det-t"></div><div class="xs muted" id="det-s"></div></div>
+    <button class="btn btn-g btn-s" onclick="go('topics')">← Back</button>
+  </div>
+  <div style="padding:20px" id="det-body"></div>
+</div>
+
+<!-- QUICK-FIRE DRILL -->
+<div id="pg-drill" class="pg">
+  <div class="topbar"><div class="tb-t">Quick-fire Drill</div><div class="xs muted">Case → Principle</div></div>
+  <div style="padding:20px">
+    <div id="drill-setup">
+      <div class="fg"><label>Topic</label><select id="dr-sel"><option value="all">All topics (mixed)</option></select></div>
+      <div class="sm muted mb">Each card shows a case name. Recall the principle, then reveal. Rate yourself. Aim for 20 cases in 10 minutes.</div>
+      <button class="btn btn-p" onclick="startDrill()">Start drill</button>
+    </div>
+    <div id="drill-run" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span class="xs muted" id="dr-cnt"></span>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span style="font-family:monospace;font-size:13px;color:var(--amb)" id="dr-timer">0:00</span>
+          <button class="btn btn-g btn-s" onclick="endDrill()">End</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:10px"><span class="badge b-gld" id="dr-topic-tag"></span></div>
+      <div class="drill-q" id="dr-q"></div>
+      <div id="dr-reveal" style="display:none" class="drill-reveal"></div>
+      <div class="bg" style="justify-content:center;margin-top:14px" id="dr-btns">
+        <button class="btn btn-g" onclick="revealDrill()">Reveal →</button>
+      </div>
+    </div>
+    <div id="drill-end" style="display:none">
+      <div class="card" style="text-align:center;padding:28px">
+        <div class="grade" id="dr-fin"></div>
+        <div class="muted sm mb" id="dr-fin-msg"></div>
+        <div class="bg" style="justify-content:center">
+          <button class="btn btn-p" onclick="startDrill()">Again</button>
+          <button class="btn btn-g" onclick="go('drill')">Change topic</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECALL -->
+<div id="pg-recall" class="pg">
+  <div class="topbar"><div class="tb-t">Recall</div><div class="xs muted" id="srs-lbl"></div></div>
+  <div style="padding:20px">
+    <div class="g2 k2 mb" style="gap:10px">
+      <div class="fg"><label>Topic</label><select id="fc-sel" onchange="loadFC()"><option value="all">All topics</option></select></div>
+      <div class="fg"><label>Filter</label>
+        <select id="fc-mode" onchange="loadFC()">
+          <option value="srs">Due for review (SRS)</option>
+          <option value="all">All cards</option>
+          <option value="weak">Weak only</option>
+          <option value="case">Cases only</option>
+          <option value="statute">Statutes only</option>
+        </select>
+      </div>
+    </div>
+    <div class="fc-wrap">
+      <div class="fc" id="fcrd" onclick="flipFC()">
+        <div class="fc-f front">
+          <div id="fc-badge" style="margin-bottom:8px"></div>
+          <div style="font-size:14.5px;font-weight:500;line-height:1.5" id="fc-q">Select a topic above</div>
+          <div class="xs muted" style="margin-top:8px" id="fc-hint"></div>
+        </div>
+        <div class="fc-f bk">
+          <div class="lbl mb">Answer</div>
+          <div style="font-size:13px;line-height:1.7;color:var(--t2)" id="fc-a"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-top:14px">
+      <button class="btn btn-g btn-s" onclick="prevFC()">← Prev</button>
+      <span class="sm muted" id="fc-cnt">—</span>
+      <button class="btn btn-g btn-s" onclick="flipFC()">Flip</button>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:10px">
+      <button class="btn btn-s btn-red" onclick="rateFC(0)">Again</button>
+      <button class="btn btn-s" style="background:var(--amb);color:#111" onclick="rateFC(1)">Hard</button>
+      <button class="btn btn-s btn-g" onclick="rateFC(2)">OK</button>
+      <button class="btn btn-s btn-grn" onclick="rateFC(3)">Easy</button>
+    </div>
+    <div class="mt" id="fc-stats" style="text-align:center;font-size:11px;color:var(--t3)"></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="pg-quiz" class="pg">
+  <div class="topbar"><div class="tb-t">Quiz</div></div>
+  <div style="padding:20px">
+    <div id="qz-setup">
+      <div class="g2 k2" style="gap:10px;margin-bottom:10px">
+        <div class="fg"><label>Topic</label>
+          <select id="qz-sel"><option value="all">All topics</option><option value="weak">Weak topics only</option></select>
+        </div>
+        <div class="fg"><label>Questions</label>
+          <select id="qz-len"><option value="5">5 quick</option><option value="10" selected>10 standard</option><option value="all">All available</option></select>
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="startQz()">Start Quiz</button>
+    </div>
+    <div id="qz-run" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span class="xs muted" id="qz-cnt"></span>
+        <span class="badge b-gld" id="qz-sc">0/0</span>
+      </div>
+      <div class="pb mb"><div class="pf" id="qz-bar" style="width:0"></div></div>
+      <div class="card mb">
+        <div class="xs muted mb" id="qz-ttag"></div>
+        <div style="font-size:14.5px;font-weight:500;line-height:1.5;margin-bottom:14px" id="qz-q"></div>
+        <div id="qz-opts"></div>
+        <div id="qz-exp" style="display:none" class="mt scenario"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-g" id="qz-nxt" style="display:none" onclick="nextQ()">Next →</button>
+        <button class="btn btn-g btn-s" onclick="endQz()">End</button>
+      </div>
+    </div>
+    <div id="qz-res" style="display:none">
+      <div class="card" style="text-align:center;padding:28px">
+        <div class="grade" id="qz-fin"></div>
+        <div class="muted sm mb" id="qz-msg"></div>
+        <div id="qz-bd" class="mb" style="text-align:left"></div>
+        <div class="bg" style="justify-content:center">
+          <button class="btn btn-p" onclick="startQz()">Retry</button>
+          <button class="btn btn-g btn-s" onclick="go('quiz')">New quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO -->
+<div id="pg-scenario" class="pg">
+  <div class="topbar"><div class="tb-t">Scenario Practice</div></div>
+  <div style="padding:20px">
+    <div class="fg"><label>Topic</label><select id="scn-sel"></select></div>
+    <div class="bg mb"><button class="btn btn-p" onclick="loadScn()">Get scenario</button><button class="btn btn-g btn-s" onclick="loadScn()">New ↻</button></div>
+    <div id="scn-body" style="display:none">
+      <div class="lbl mb">Scenario</div>
+      <div class="scenario" id="scn-txt"></div>
+      <div class="card pur mb"><div class="h3" style="color:var(--acc2);margin-bottom:7px">Issue-spotting checklist</div><div class="sm" id="scn-prompt" style="line-height:1.75"></div></div>
+      <div id="scn-steps" class="mb"></div>
+      <div class="bg">
+        <button class="btn btn-g btn-s" onclick="showScnA()">Show model structure</button>
+        <button class="btn btn-g btn-s" onclick="scnWrite()">Write answer →</button>
+      </div>
+      <div id="scn-ans" style="display:none;margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY BUILDER -->
+<div id="pg-essay" class="pg">
+  <div class="topbar"><div class="tb-t">Essay Builder</div></div>
+  <div style="padding:20px">
+    <div class="fg"><label>Topic</label><select id="es-sel"></select></div>
+    <div class="bg mb"><button class="btn btn-p" onclick="loadEs()">Get question</button><button class="btn btn-g btn-s" onclick="loadEs()">New ↻</button></div>
+    <div id="es-body" style="display:none">
+      <div class="scenario" id="es-q"></div>
+      <div class="card pur mb"><div class="h3" style="color:var(--acc2);margin-bottom:7px">Scaffold</div><div id="es-scaffold" class="sm" style="line-height:1.8"></div></div>
+      <div class="card grn mb"><div class="h3" style="color:var(--grn);margin-bottom:7px">Model paragraph — examiner level</div><div id="es-model" class="sm" style="line-height:1.8;color:var(--t2)"></div></div>
+      <div class="fg"><label>Your thesis</label><textarea id="es-thesis" placeholder="Your central argument in one sentence…" style="min-height:55px"></textarea></div>
+      <div class="fg"><label>Paragraph 1 — point + authority + evaluation</label><textarea id="es-p1" placeholder="Point → case/statute → evaluate…" style="min-height:65px"></textarea></div>
+      <div class="fg"><label>Paragraph 2 — counter-argument</label><textarea id="es-p2" placeholder="Counter-argument → authority → assess…" style="min-height:65px"></textarea></div>
+      <div class="fg"><label>Paragraph 3 — reform / theorist</label><textarea id="es-p3" placeholder="Reform or theoretical perspective…" style="min-height:65px"></textarea></div>
+      <div class="fg"><label>Conclusion</label><textarea id="es-conc" placeholder="Direct answer justified by your argument…" style="min-height:55px"></textarea></div>
+      <div class="bg"><button class="btn btn-p" onclick="esWrite()">Write full answer →</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITE -->
+<div id="pg-write" class="pg">
+  <div class="topbar"><div class="tb-t">Write</div></div>
+  <div style="padding:20px">
+    <div class="tabs">
+      <div class="tab on" onclick="wTab('q')">Setup</div>
+      <div class="tab" onclick="wTab('t')">Technique</div>
+      <div class="tab" onclick="wTab('w')">Workspace</div>
+    </div>
+    <div id="w-q">
+      <div class="g2 k2" style="gap:10px;margin-bottom:10px">
+        <div class="fg"><label>Type</label><select id="w-qt" onchange="upHint()"><option value="problem">Problem question</option><option value="essay">Essay / evaluation</option><option value="short">Short answer</option></select></div>
+        <div class="fg"><label>Topic</label><select id="w-top"></select></div>
+      </div>
+      <div class="fg"><label>Question</label><textarea id="w-qtxt" placeholder="Paste the question here…" style="min-height:80px"></textarea></div>
+      <div class="fg"><label>Answer plan</label><textarea id="w-plan" placeholder="Issues → law → apply → conclude…" style="min-height:65px"></textarea></div>
+      <div id="w-hint" class="ms nx" style="margin-top:8px"></div>
+      <div class="bg"><button class="btn btn-p" onclick="wTab('w')">Open workspace →</button></div>
+    </div>
+    <div id="w-t" style="display:none"></div>
+    <div id="w-w" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+        <div class="xs muted" id="ws-meta"></div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-family:monospace;font-size:12px;color:var(--t2)" id="tmr">00:00</span>
+          <button class="btn btn-g btn-xs" id="tmr-btn" onclick="togTmr()">Start</button>
+        </div>
+      </div>
+      <div class="xs muted mb" id="ws-prev" style="padding:8px 11px;background:var(--s2);border-radius:var(--r);border-left:3px solid var(--acc)"></div>
+      <textarea id="w-ans" placeholder="Write your full answer here… (autosaved)" style="min-height:280px"></textarea>
+      <div class="xs muted" id="autosave-note" style="margin-top:4px;text-align:right;min-height:16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;flex-wrap:wrap;gap:6px">
+        <span class="xs muted" id="wc">0 words</span>
+        <div class="bg" style="margin:0">
+          <button class="btn btn-p btn-s" onclick="toMark()">Send to Mark →</button>
+          <button class="btn btn-g btn-s" onclick="cpAns()">Copy</button>
+          <button class="btn btn-g btn-s" onclick="dlAns()">Download</button>
+          <button class="btn btn-g btn-s" onclick="mailAns()">Email draft</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARK -->
+<div id="pg-mark" class="pg">
+  <div class="topbar"><div class="tb-t">Mark</div></div>
+  <div style="padding:20px">
+    <div id="mk-in">
+      <div class="g2 k2" style="gap:10px;margin-bottom:10px">
+        <div class="fg"><label>Type</label><select id="mk-qt"><option value="problem">Problem question</option><option value="essay">Essay / evaluation</option><option value="short">Short answer</option></select></div>
+        <div class="fg"><label>Topic (for targeted feedback)</label><select id="mk-top"></select></div>
+      </div>
+      <div class="fg"><label>Marks available</label><select id="mk-marks"><option value="">Not specified</option><option value="8">8 marks</option><option value="15">15 marks</option><option value="25">25 marks</option></select></div>
+      <div class="fg"><label>Question (optional — paste for context)</label><textarea id="mk-q" style="min-height:60px" placeholder="Paste the question for context…"></textarea></div>
+      <div class="fg"><label>Your answer</label><textarea id="mk-a" style="min-height:200px" placeholder="Paste or type your answer…"></textarea></div>
+      <button class="btn btn-p" onclick="runMark()">Mark this answer</button>
+    </div>
+    <div id="mk-out" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="h2" style="margin:0">Feedback</div>
+        <button class="btn btn-g btn-s" onclick="resetMark()">Mark another</button>
+      </div>
+      <div class="grade" id="mk-grade"></div>
+      <div class="xs muted" style="text-align:center;margin-bottom:14px" id="mk-sum"></div>
+      <div class="ms str"><div class="st">Strengths</div><div id="mk-str"></div></div>
+      <div class="ms wk"><div class="st">Weaknesses</div><div id="mk-wk"></div></div>
+      <div class="ms om"><div class="st">Key omissions — authorities you should have cited</div><div id="mk-om"></div></div>
+      <div class="ms nx"><div class="st">3 priority actions</div><div id="mk-nx"></div></div>
+      <div class="card mt" style="padding:12px"><div class="lbl mb">Examiner's note</div><div class="xs muted" id="mk-note"></div></div>
+      <div class="bg"><button class="btn btn-g btn-s" onclick="logMistake()">Log mistake</button><button class="btn btn-g btn-s" onclick="cpFb()">Copy feedback</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PLANNER -->
+<div id="pg-planner" class="pg">
+  <div class="topbar"><div class="tb-t">Planner</div></div>
+  <div style="padding:20px">
+    <div class="card mb" id="pl-setup">
+      <div class="h3 mb">Setup</div>
+      <div class="g3" style="gap:10px">
+        <div class="fg"><label>Exam date</label><input type="date" id="pl-dt"></div>
+        <div class="fg"><label>Days / week</label><select id="pl-days"><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option></select></div>
+        <div class="fg"><label>Hours / day</label><select id="pl-hrs"><option value="1">1h</option><option value="1.5">1.5h</option><option value="2" selected>2h</option><option value="3">3h</option></select></div>
+      </div>
+      <div class="h3 mb">Topic confidence</div>
+      <div id="pl-conf"></div>
+      <button class="btn btn-p mt" onclick="buildPlan()">Build plan</button>
+    </div>
+    <div id="pl-out" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div><div style="font-size:38px;font-weight:700;color:var(--acc);line-height:1" id="pl-cd"></div><div class="xs muted" style="text-align:center" id="pl-sub"></div></div>
+        <button class="btn btn-g btn-s" onclick="showSetup()">Edit</button>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge b-grn">■ Done</span><span class="badge b-gld">■ Today</span><span class="badge b-red">■ Overdue</span><span class="badge b-pur">■ Scheduled</span>
+      </div>
+      <div id="pl-cal"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div id="pg-progress" class="pg">
+  <div class="topbar"><div class="tb-t">Progress</div></div>
+  <div style="padding:20px">
+    <div class="g4 k4 mb">
+      <div class="card stat"><div class="stn" id="pr-t">0/6</div><div class="stl">Topics done</div></div>
+      <div class="card stat"><div class="stn" id="pr-a">0</div><div class="stl">Answers</div></div>
+      <div class="card stat"><div class="stn" id="pr-c">0</div><div class="stl">Cards</div></div>
+      <div class="card stat"><div class="stn" id="pr-q">0%</div><div class="stl">Quiz avg</div></div>
+    </div>
+    <div class="sdiv"><span class="sl">Card mastery heatmap</span></div>
+    <div id="pr-heat" class="mb"></div>
+    <div class="sdiv"><span class="sl">Topic progress</span></div>
+    <div id="pr-list" class="mb"></div>
+    <div class="sdiv"><span class="sl">Mistake log</span></div>
+    <div id="pr-mis" class="mb"></div>
+    <div class="sdiv"><span class="sl">Weak areas</span></div>
+    <div id="pr-weak"></div>
+    <div class="mt"><button class="btn btn-g btn-s" onclick="resetAll()">Reset all progress</button></div>
+  </div>
+</div>
+
+</div></div><!-- /content /shell -->
+<div class="flash" id="fl"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const T=[
+  {id:'legal-system',title:'The Legal System',spec:'Component 01',col:'b-gld',
+   sum:'Courts, precedent, personnel, ADR, access to justice.',
+   sub:['Court hierarchy: Magistrates → Crown → CA → SC','Doctrine of precedent: ratio, obiter, stare decisis, per incuriam','Judges & magistrates: appointment, independence','Solicitors & barristers: cab rank rule, fusion debate','Access to justice: LASPO 2012, conditional fees, litigants in person','ADR: negotiation, mediation, conciliation, arbitration','Juries: selection, advantages, disadvantages'],
+   cases:[{n:'Young v Bristol Aeroplane Co [1944]',k:'Three CA exceptions to binding itself'},{n:'Practice Statement [1966]',k:'SC/HL power to depart from own decisions'},{n:'Donoghue v Stevenson [1932]',k:'Ratio vs obiter; neighbour principle'},{n:'Pepper v Hart [1993]',k:'Hansard admissible as extrinsic aid'}],
+   stat:['Courts Act 2003','Legal Services Act 2007','LASPO 2012','Arbitration Act 1996'],
+   eval:['Juries: impartial but no legal knowledge — perverse verdicts possible','ADR: cost-effective but no binding precedent and unequal bargaining risk','LASPO 2012: severe access to justice gap — rise in litigants in person','Judicial independence essential but limited democratic accountability'],
+   tech:'Problem Qs: identify court and precedent rule. Essays: evaluate whether the system achieves access to justice — use LASPO, jury reform, ADR growth as evidence. Every point needs authority.'},
+  {id:'criminal-law',title:'Criminal Law',spec:'Component 01',col:'b-red',
+   sum:'AR, MR, specific offences, defences.',
+   sub:['AR: voluntary act, omissions (6 categories), causation (factual + legal)','MR: direct intent, oblique intent (Woollin), Cunningham recklessness','Strict liability: Gammon test, public safety rationale','Non-fatal offences: s.47, s.20, s.18 OAPA 1861','Fatal offences: murder, voluntary manslaughter (LoC, DR), involuntary manslaughter (GNM, constructive)','Defences: self-defence, consent, insanity, automatism, intoxication, duress'],
+   cases:[{n:'R v Woollin [1999]',k:'Oblique intent — virtual certainty test'},{n:'R v Cunningham [1957]',k:'Subjective recklessness'},{n:'R v Pittwood [1902]',k:'Omission — contractual duty'},{n:'R v Stone & Dobinson [1977]',k:'Omission — voluntary assumption of duty'},{n:'R v Blaue [1975]',k:'Thin skull rule'},{n:'R v Ireland; Burstow [1997]',k:'Psychiatric harm satisfies s.20/47'},{n:'R v Adomako [1994]',k:'Gross negligence manslaughter test'}],
+   stat:['OAPA 1861 (ss.18, 20, 47)','Homicide Act 1957','Coroners and Justice Act 2009','CJIA 2008 s.76'],
+   eval:['Codification needed: law scattered across centuries, complex and inaccessible','Strict liability: public protection justified (Gammon) but morally problematic without fault','Loss of control (CJA 2009): reformed provocation but qualifying triggers still contested','GNM vs constructive manslaughter: inconsistent fault levels — Law Commission proposals'],
+   tech:'IRAC per issue. AR elements → apply to facts. MR → apply. Defences only after primary liability. Cite statute section AND case together. Never state law without applying to specific facts.'},
+  {id:'law-making',title:'Law Making',spec:'Component 01',col:'b-pur',
+   sum:'Legislation, delegated legislation, statutory interpretation.',
+   sub:['Parliamentary process: stages of a Bill','Influences: Law Commission, government, media, pressure groups','Delegated legislation: Orders in Council, SIs, bylaws; controls','Statutory interpretation: literal, golden, mischief, purposive rules','Aids: intrinsic and extrinsic (Pepper v Hart)','Judicial law making: precedent, limits'],
+   cases:[{n:'Whiteley v Chappell [1868]',k:'Literal rule — absurd result'},{n:'R v Allen [1872]',k:"Golden rule (narrow) — avoid absurdity"},{n:"Adler v George [1964]",k:'Golden rule (wide) — modify clear meaning'},{n:"Heydon's Case [1584]",k:'Mischief rule — four-stage test'},{n:'Smith v Hughes [1960]',k:'Mischief rule — soliciting from window'},{n:"Pepper v Hart [1993]",k:'Hansard admissible'}],
+   stat:['Parliament Acts 1911 & 1949','Interpretation Act 1978','HRA 1998 s.3'],
+   eval:['Literal: certain but absurdity possible (Whiteley)','Mischief: purposive but retrospective — undemocratic?','Purposive: flexible but unpredictable; judges as legislators','Delegated legislation: efficient but lacks scrutiny; Henry VIII clauses problematic'],
+   tech:"Essays: evaluate EACH rule — name, case, advantage, specific weakness. Compare. Do not merely list. Conclude which best serves parliamentary intent."},
+  {id:'tort',title:'The Law of Tort',spec:'Component 01',col:'b-amb',
+   sum:"Negligence, occupiers' liability, nuisance.",
+   sub:['Negligence: duty (Caparo), breach (matrix), causation (but for), remoteness (Wagon Mound)','Psychiatric injury: primary/secondary victims (Page v Smith; Alcock)','Pure economic loss: restricted (Hedley Byrne for negligent misstatement)','OLA 1957 (visitors) and OLA 1984 (trespassers)','Private nuisance: unreasonable interference — sensitivity, duration, malice','Rylands v Fletcher: strict liability — non-natural use, escape','Defences: contributory negligence, volenti, ex turpi causa'],
+   cases:[{n:'Caparo v Dickman [1990]',k:'Three-stage duty of care test'},{n:'Paris v Stepney BC [1951]',k:'Breach — severity of potential harm'},{n:'Bolton v Stone [1951]',k:'Breach — low likelihood, no breach'},{n:'Barnett v Chelsea [1969]',k:'"But for" causation test'},{n:'Wagon Mound No 1 [1961]',k:'Remoteness — foreseeable type of damage'},{n:'Page v Smith [1996]',k:'Primary victim — psychiatric injury'},{n:'Rylands v Fletcher [1868]',k:'Strict liability — non-natural use escape'}],
+   stat:["Occupiers' Liability Act 1957","Occupiers' Liability Act 1984",'Law Reform (Contributory Negligence) Act 1945'],
+   eval:['Caparo: "fair, just, reasonable" too vague — inconsistently applied','Psychiatric injury: arbitrary control mechanisms — floodgates concern','OLA 1984: inadequate protection for child trespassers','Rylands: near-defunct after Cambridge Water — non-natural use narrowly construed'],
+   tech:'Caparo three stages for duty always. Breach matrix: likelihood, severity, utility, cost. "But for" before remoteness — they are separate steps. Damages: distinguish general and special.'},
+  {id:'nature-of-law',title:'The Nature of Law',spec:'Component 02',col:'b-grn',
+   sum:'Law and morality, justice, judicial creativity, fault.',
+   sub:['Law and morality: Hart, Fuller, Devlin, Mill — enforcement debate','Law and justice: formal, substantive, distributive, corrective; Rawls, Nozick','Judicial creativity: R v R, Shaw v DPP — advantages and separation of powers risks','Fault as basis for liability: strict liability debate','Balancing conflicting interests: individual vs collective'],
+   cases:[{n:'R v R [1991]',k:'Judicial creativity — marital rape immunity abolished'},{n:'Gillick v West Norfolk [1986]',k:'Law and morality — contraception for under-16s'},{n:'Shaw v DPP [1962]',k:'Conspiracy to corrupt — judicial law making'}],
+   stat:['Sexual Offences Act 2003','Abortion Act 1967','HRA 1998'],
+   eval:['Hart vs Devlin: should law enforce shared morality? Wolfenden context','Euthanasia, drugs — law lagging moral consensus','Rawls veil of ignorance: idealistic? Nozick\'s libertarian counter','Strict liability: public protection justified vs morally objectionable without fault'],
+   tech:'Name theorists precisely. Every assertion needs case, statute, or named theorist. Engage with counter-arguments. Avoid generic statements without engagement with the specific debate.'},
+  {id:'contract',title:'The Law of Contract',spec:'Component 02',col:'b-pur',
+   sum:'Formation, terms, vitiating factors, discharge, remedies.',
+   sub:['Offer & acceptance: counter-offer, postal rule, revocation','Consideration: sufficiency, existing duty (Williams v Roffey)','ITCLR: domestic (Balfour) vs commercial presumptions','Privity and C(RTPA) 1999','Terms: conditions, warranties, innominate; exclusion clauses (UCTA, CRA 2015)','Vitiating factors: misrepresentation, duress, undue influence','Discharge: performance, agreement, breach, frustration','Remedies: expectation damages (Hadley), specific performance, rescission'],
+   cases:[{n:'Carlill v Carbolic Smoke Ball [1893]',k:'Unilateral offer — advertisement'},{n:'Hyde v Wrench [1840]',k:'Counter-offer kills original offer'},{n:'Adams v Lindsell [1818]',k:'Postal rule — acceptance on posting'},{n:'Williams v Roffey [1990]',k:'Practical benefit — consideration'},{n:'Balfour v Balfour [1919]',k:'No ITCLR in domestic agreements'},{n:'Hadley v Baxendale [1854]',k:'Remoteness of contractual damages'},{n:'Davis Contractors v Fareham [1956]',k:'Frustration — radically different performance'}],
+   stat:['Unfair Contract Terms Act 1977','Consumer Rights Act 2015','Misrepresentation Act 1967','C(RTPA) 1999','Law Reform (Frustrated Contracts) Act 1943'],
+   eval:['Consideration doctrine outdated — Williams v Roffey inconsistency','Privity: C(RTPA) 1999 incomplete reform','CRA 2015 vs UCTA: stronger consumer protection but commercial certainty weakened','Specific performance: discretionary and unpredictable'],
+   tech:'Systematic: formation → terms → vitiating factors → discharge → remedies. Prove each element. Essays: evaluate against both certainty and fairness — cite case authority and reform commentary.'}
+];
+
+const FC={
+  'legal-system':[
+    {q:'Three Young v Bristol Aeroplane Co [1944] exceptions.',a:'(1) Two conflicting CA decisions — CA chooses. (2) CA implicitly overruled by HL/SC. (3) Per incuriam (in error).',type:'case'},
+    {q:'Practice Statement 1966 — what did it permit?',a:'SC (formerly HL) to depart from its own prior decisions where it appears right to do so. Certainty remains the default.',type:'case'},
+    {q:'Ratio decidendi vs obiter dicta.',a:'Ratio: binding legal reason for the decision. Obiter: statements made "by the way" — persuasive only, not binding.',type:'principle'},
+    {q:'Four types of ADR and their key feature.',a:'Negotiation (direct; no third party). Mediation (neutral assists; non-binding). Conciliation (mediator more active). Arbitration (binding — Arbitration Act 1996).',type:'principle'},
+    {q:'What did LASPO 2012 do to legal aid?',a:'Removed most civil legal aid except family/immigration. Means and merits tests introduced. Sharp rise in litigants in person — access to justice gap.',type:'statute'},
+    {q:'Cab rank rule.',a:'Barristers must accept any case within their competence for a proper fee, regardless of personal views on the client.',type:'principle'},
+    {q:'Per incuriam — definition and significance.',a:'A decision made "in error" — relevant binding authority was not cited. Per incuriam decisions are not binding (Young v Bristol exception 3).',type:'principle'},
+  ],
+  'criminal-law':[
+    {q:'Woollin [1999] direction on oblique intent.',a:"Jury may find intention where death/GBH was a virtual certainty as a result of D's actions and D appreciated that to be the case.",type:'case'},
+    {q:'Cunningham [1957] recklessness — definition.',a:'Subjective: D foresaw the risk of harm and took it unjustifiably. D must have been aware of the risk.',type:'case'},
+    {q:'S.47 OAPA 1861 — AR and MR.',a:'AR: assault or battery occasioning ABH (more than transient: bruising, psychiatric harm). MR: intent/recklessness as to the assault/battery only — no MR required as to the ABH itself.',type:'statute'},
+    {q:'Thin skull rule — principle and authority.',a:"D takes V as found. R v Blaue [1975]: V refused blood transfusion on religious grounds — D still liable for death.",type:'case'},
+    {q:'Loss of control — three elements (CJA 2009).',a:"(1) Loss of self-control. (2) Qualifying trigger: fear of serious violence OR things of extremely grave character giving justifiable sense of being seriously wronged. (3) Person of D's sex and age with normal tolerance would react similarly. D must not have incited the trigger.",type:'statute'},
+    {q:'Adomako [1994] gross negligence manslaughter test.',a:'(1) D owed V duty of care. (2) D breached it. (3) Breach caused death. (4) Breach so grossly negligent jury ought to regard it as criminal.',type:'case'},
+    {q:'Six categories of omission liability.',a:'(1) Statutory duty. (2) Contractual duty (Pittwood). (3) Official position. (4) Voluntary assumption (Stone & Dobinson). (5) Dangerous situation created by D. (6) Special relationship.',type:'principle'},
+  ],
+  'law-making':[
+    {q:'Mischief rule — principle and case.',a:"Heydon's Case [1584]: ask what mischief the Act was intended to remedy; apply to suppress it. Smith v Hughes [1960]: soliciting from inside a window covered.",type:'case'},
+    {q:'Literal rule — principle and case.',a:"Plain, ordinary, grammatical meaning even if absurd. Whiteley v Chappell [1868]: impersonating a dead person not an offence on literal reading.",type:'case'},
+    {q:'Two applications of the golden rule.',a:"Narrow: choose between meanings to avoid absurdity (R v Allen [1872] — 'marry' = go through ceremony). Wide: modify clear meaning to avoid repugnant result (Adler v George [1964]).",type:'case'},
+    {q:'Pepper v Hart [1993] — what did it decide?',a:'Hansard (parliamentary debates) admissible as extrinsic aid where statute is ambiguous and there is a clear ministerial statement.',type:'case'},
+    {q:'Three main forms of delegated legislation.',a:'Orders in Council (Crown/Privy Council — emergencies). Statutory instruments (ministers implementing Acts). Bylaws (local authorities — local matters).',type:'principle'},
+    {q:'Stages of a Public Bill through Parliament.',a:'First Reading → Second Reading (principles) → Committee (detail) → Report (amendments) → Third Reading → Other House → Royal Assent.',type:'principle'},
+  ],
+  'tort':[
+    {q:'Caparo [1990] three-stage test.',a:'(1) Damage reasonably foreseeable. (2) Proximity of relationship. (3) Fair, just and reasonable to impose duty. All three must be satisfied.',type:'case'},
+    {q:'Breach of duty — relevant factors.',a:"Likelihood of harm (Bolton v Stone), severity of harm (Paris v Stepney), social utility of D's act, cost of precautions (Latimer v AEC). Balanced against the reasonable person standard.",type:'principle'},
+    {q:'"But for" test — principle and authority.',a:"Barnett v Chelsea [1969]: but for D's breach, would the damage have occurred? Here V would have died of arsenic regardless — no causation established.",type:'case'},
+    {q:'Remoteness — principle and authority.',a:'D only liable for damage of a type reasonably foreseeable. Wagon Mound No 1 [1961]: fire damage from oil spill was unforeseeable — not liable.',type:'case'},
+    {q:'OLA 1957 duty to visitors.',a:"Common duty of care: take such care as is reasonable in all circumstances to see the visitor will be reasonably safe for the permitted purpose. Occupier = person with control (Wheat v Lacon [1966]).",type:'statute'},
+    {q:'Rule in Rylands v Fletcher [1868].',a:"Person who brings onto land for non-natural use something likely to do mischief if it escapes is strictly liable for direct damage caused. Cambridge Water [1994] adds: damage must be reasonably foreseeable.",type:'case'},
+  ],
+  'nature-of-law':[
+    {q:'Hart–Devlin debate — summary.',a:"Devlin: society has right to enforce shared morality to prevent disintegration. Hart (Mill): law should restrict liberty only to prevent harm to others. Context: Wolfenden Report 1957.",type:'principle'},
+    {q:"Rawls' theory of justice.",a:"Veil of ignorance: rational people ignorant of their social position choose (1) equal basic liberties and (2) inequalities only where they benefit the least advantaged.",type:'principle'},
+    {q:'Formal vs substantive justice.',a:'Formal: law applied equally and consistently — procedural fairness. Substantive: outcomes are fair and morally correct. A formally just system can produce substantively unjust results.',type:'principle'},
+    {q:'R v R [1991] — what does it illustrate?',a:"HL abolished marital rape immunity (from Hale 1736) through judicial creativity. Confirmed by Sexual Offences Act 2003. Raises separation of powers concerns.",type:'case'},
+    {q:"Fuller's inner morality — the eight criteria.",a:'Generality, promulgation, non-retroactivity, clarity, consistency, constancy, possibility of compliance, congruence between rules and official action.',type:'principle'},
+    {q:'Two examples of law and morality diverging.',a:'Euthanasia: illegal (murder) but many view as morally permissible in extremis. Drug possession: criminalised but widely seen as a private moral choice. Historically: homosexuality illegal until Sexual Offences Act 1967.',type:'principle'},
+  ],
+  'contract':[
+    {q:'Postal rule — principle and authority.',a:"Adams v Lindsell [1818]: acceptance effective on posting, not receipt. Applies to acceptance only. Offer, revocation, and rejection require communication to take effect.",type:'case'},
+    {q:'Williams v Roffey [1990] — what did it decide?',a:"Promise to pay more for existing contractual performance binding if promisor gains a practical benefit (e.g. avoids penalty clause). Controversially relaxes the existing duty rule.",type:'case'},
+    {q:'Three elements of actionable misrepresentation.',a:'(1) False statement of existing fact (not opinion — Bisset v Wilkinson). (2) Made by one contracting party to the other. (3) Which induced the other to enter the contract.',type:'principle'},
+    {q:'Frustration — Davis Contractors test.',a:"Supervening event beyond parties' control renders performance radically different from what was agreed. Davis Contractors v Fareham [1956]: mere difficulty insufficient.",type:'case'},
+    {q:'Hadley v Baxendale [1854] remoteness rule.',a:'Recoverable: (1) loss arising naturally from the breach in the usual course, or (2) loss within reasonable contemplation of both parties at the time of contracting.',type:'case'},
+    {q:'CRA 2015 vs UCTA 1977.',a:"CRA 2015: B2C — automatically unfair terms unenforceable (e.g. personal injury liability). UCTA 1977: B2B — reasonableness test. CRA gives stronger automatic consumer protection.",type:'statute'},
+  ],
+};
+
+const QZ={
+  'legal-system':[
+    {q:'Which case established the CA is bound by its own decisions?',o:['Young v Bristol Aeroplane Co','Donoghue v Stevenson','R v Howe','Caparo v Dickman'],a:0,e:"Young v Bristol Aeroplane Co [1944]: CA bound by its own decisions, subject to three stated exceptions."},
+    {q:'Practice Statement 1966 permits:',o:['CA to overrule HL','SC to depart from its own prior decisions','Judges to ignore statute','Magistrates to create precedent'],a:1,e:"Allows SC (formerly HL) to depart from its own decisions where it appears right to do so."},
+    {q:'Which ADR form produces a binding decision?',o:['Negotiation','Mediation','Conciliation','Arbitration'],a:3,e:"Arbitration is binding under the Arbitration Act 1996. The others are non-binding facilitative processes."},
+    {q:'LASPO 2012 primarily affected:',o:['Criminal legal aid','Civil legal aid','Appeal costs only','Legal aid for prisoners'],a:1,e:"LASPO 2012 removed most civil legal aid, causing a sharp rise in litigants in person and an access to justice crisis."},
+    {q:'Ratio decidendi is:',o:['Persuasive statement made in passing','The binding legal reason for the decision','A dissenting judgment','An interpretation rule'],a:1,e:"Ratio decidendi is the binding legal reason for a decision — the only part that creates binding precedent."},
+  ],
+  'criminal-law':[
+    {q:"Woollin [1999]: oblique intent found where:",o:['D intended the result','Result more likely than not','Death/GBH virtual certainty and D appreciated this','D was reckless'],a:2,e:"Jury may find oblique intent where death or GBH was a virtual certainty and D appreciated that to be the case."},
+    {q:'S.20 OAPA 1861 AR requires:',o:['Any harm','Assault occasioning ABH','Wounding or GBH','Wounding with intent to cause GBH'],a:2,e:"S.20: unlawful wounding (breaking both skin layers) or inflicting GBH. S.18 adds intent; s.47 is ABH."},
+    {q:'R v Blaue [1975] established:',o:['Factual causation test','Thin skull rule','Oblique intent test','Omission liability'],a:1,e:"Blaue: D must take V as found — thin skull rule. V refused transfusion on religious grounds; D still liable for death."},
+    {q:'Pittwood [1902] — omission liability based on:',o:['Statutory duty','Contractual duty','Voluntary assumption','Official position'],a:1,e:"Pittwood: gatekeeper failed to close a level crossing gate. Liability arose from contractual duty to act."},
+    {q:'Loss of control replaced:',o:['Diminished responsibility','Consent','Provocation','Duress'],a:2,e:"Coroners and Justice Act 2009 abolished provocation and replaced it with loss of control, with specific qualifying triggers."},
+  ],
+  'law-making':[
+    {q:'Whiteley v Chappell [1868] illustrates:',o:['Mischief rule','Golden rule (wide)','Literal rule','Purposive approach'],a:2,e:"Whiteley: literal reading meant impersonating a dead voter was not an offence. Classic absurdity of the literal rule."},
+    {q:"Pepper v Hart [1993] permitted courts to use:",o:['Law Commission reports','Hansard','Explanatory notes','International treaties'],a:1,e:"Pepper v Hart: Hansard admissible where statute is ambiguous and there is a clear ministerial statement."},
+    {q:"Heydon's Case [1584] established:",o:['Literal rule','Golden rule','Mischief rule','Purposive approach'],a:2,e:"Heydon's Case: the mischief rule — courts ask what mischief the Act was passed to remedy."},
+    {q:'Delegated legislation used for national emergencies:',o:['Bylaws','Statutory instruments','Orders in Council','EU regulations'],a:2,e:"Orders in Council (Crown/Privy Council) used for emergencies and major constitutional changes."},
+    {q:'Purposive approach most associated with:',o:['Magistrates courts','EU Court of Justice','Court of Appeal','Privy Council'],a:1,e:"EU Court of Justice uses the purposive approach — purpose and spirit over literal text. Influenced UK courts post-HRA."},
+  ],
+  'tort':[
+    {q:'Caparo v Dickman [1990] established:',o:['Neighbour principle','Three-stage duty of care test','But for causation test','Remoteness test'],a:1,e:"Caparo: foreseeability, proximity, and fair/just/reasonable as the three-stage duty test. All three must be satisfied."},
+    {q:'Paris v Stepney BC [1951] concerns which breach factor?',o:['Likelihood of harm','Social utility of the act','Severity of potential harm','Cost of precautions'],a:2,e:"Paris: one-eyed worker not given goggles. Severity of potential harm (total blindness) especially high for this claimant."},
+    {q:'Barnett v Chelsea [1969] demonstrates:',o:['Duty of care','Breach of duty','But for causation test','Remoteness of damage'],a:2,e:"Barnett: V would have died of arsenic regardless of D's negligence. But for test fails — no causation established."},
+    {q:'Wagon Mound No 1 [1961] established:',o:['But for causation','Reasonable foreseeability of type of damage (remoteness)','Neighbour principle','Thin skull rule'],a:1,e:"Wagon Mound No 1: D only liable for damage of a type reasonably foreseeable. Fire damage from oil spill unforeseeable."},
+    {q:'OLA 1984 s.1(3) duty to trespassers arises when:',o:['Any trespasser is present','Knows of danger, knows trespassers may encounter it, reasonable to protect against it','There is always a duty not to deliberately harm','Trespasser is a child'],a:1,e:"OLA 1984: all three conditions must be met — knowledge of danger, awareness of likely trespassers, and reasonableness."},
+  ],
+  'nature-of-law':[
+    {q:'Who argued society has the right to legislate morality?',o:['H.L.A. Hart','J.S. Mill','Lord Devlin','John Rawls'],a:2,e:"Lord Devlin in 'The Enforcement of Morals' argued shared morality is the cement of society — law can enforce it."},
+    {q:"Rawls' veil of ignorance supports:",o:['Corrective justice','Retributive justice','Distributive justice','Commutative justice'],a:2,e:"Rawls: rational people ignorant of their social position would choose fair distribution — distributive justice."},
+    {q:'R v R [1991] illustrates:',o:['Statutory interpretation','Judicial creativity overriding established common law','Parliamentary reform','ADR in practice'],a:1,e:"R v R: HL abolished marital rape immunity through judicial creativity — changing common law, a legislative function."},
+    {q:"Fuller's inner morality requires law to be:",o:['Retroactive to correct injustice','Unpublished for security','Clear, consistent, and prospective','Subject to judicial discretion in every case'],a:2,e:"Fuller's eight criteria include clarity, consistency, and non-retroactivity. Failing these, something may not qualify as law at all."},
+    {q:'Sexual Offences Act 1967:',o:['Criminalised homosexuality','Decriminalised homosexuality between adult males','Introduced the age of consent','Reformed the law on rape'],a:1,e:"The 1967 Act decriminalised homosexual acts in private between men over 21 in England and Wales."},
+  ],
+  'contract':[
+    {q:'The postal rule applies to:',o:['All contract communications','Offers only','Acceptance only','Revocation of an offer'],a:2,e:"Adams v Lindsell: postal rule applies to acceptance only — effective on posting. Offer and revocation require communication."},
+    {q:'Williams v Roffey [1990] modified:',o:['Offer and acceptance rules','Consideration — the existing duty rule','The privity doctrine','The law on frustration'],a:1,e:"Williams v Roffey: practical benefit can constitute consideration for performing an existing duty — modifies traditional rule."},
+    {q:'Hyde v Wrench [1840] — counter-offer:',o:['Can still be accepted later','Suspends the original offer','Destroys the original offer','Must be made in writing'],a:2,e:"Hyde v Wrench: counter-offer destroys the original offer — it cannot subsequently be accepted."},
+    {q:'Hadley v Baxendale [1854] concerns:',o:['The sufficiency of consideration','Remoteness of contractual damages','The test for frustration','Fraudulent misrepresentation'],a:1,e:"Hadley: recoverable damages are those arising naturally or within reasonable contemplation of both parties at contracting."},
+    {q:'CRA 2015 applies to:',o:['B2B (business to business) contracts','B2C (consumer) contracts','All contracts regardless of parties','International commercial contracts only'],a:1,e:"Consumer Rights Act 2015 applies to B2C contracts. UCTA 1977 applies to B2B. CRA gives stronger automatic protections."},
+  ],
+};
+
+const SCENARIOS={
+  'legal-system':[
+    {text:"Alice is suing her employer for unfair dismissal. The Employment Tribunal ruled against her. She wants to appeal. Her solicitor advises that a 2019 Court of Appeal decision is binding, but a 2022 Supreme Court decision may have impliedly overruled it.",
+     prompt:"Identify: (1) The correct court hierarchy. (2) Whether the CA decision is still binding. (3) The effect of implied overruling. (4) The role of ratio vs obiter in both decisions.",
+     steps:["Identify the court hierarchy for employment appeals","Apply stare decisis — is the CA bound by its own 2019 decision (Young v Bristol)?","Analyse whether the SC impliedly overruled it (Young v Bristol exception 2)","Distinguish ratio from obiter in both decisions","Advise Alice on her appeal prospects"],
+     model:"Issue \u2192 Rule (Young v Bristol; Practice Statement) \u2192 Apply to each court \u2192 Conclude whether the CA will follow or depart. Discuss ratio vs obiter precisely."},
+    {text:"Ben, a barrister, refuses to represent a client charged with a serious sexual offence, saying the case conflicts with his personal values. The client cannot afford to instruct another barrister.",
+     prompt:"Identify: (1) The relevant professional rule. (2) Whether Ben's refusal is lawful. (3) The access to justice implications.",
+     steps:["Apply the cab rank rule — does it cover this type of case?","Is there a legitimate exception for personal values?","LASPO 2012 context — is legal aid available?","Access to justice implications — the client's position","Conclude on Ben's position and the regulatory consequences"],
+     model:"Cab rank rule: barristers must accept any case within their competence. Personal views are not an exception. Address access to justice: LASPO 2012 cuts, funding gap, right to representation."},
+    {text:"A Magistrates' Court delivers a decision clearly inconsistent with a binding Court of Appeal authority on the same point of law. The defendant wants to appeal.",
+     prompt:"Identify: (1) The doctrine of precedent as it applies. (2) The correct appeal route. (3) Whether the magistrates were bound. (4) The likely outcome on appeal.",
+     steps:["Establish the court hierarchy — are magistrates bound by CA decisions?","Stare decisis: CA decisions are binding on all lower courts","Identify the appeal route from Magistrates' Court","What remedy is available — remittal or substituted verdict?","Advise the defendant on prospects"],
+     model:"Magistrates bound by all superior courts including CA. Appeal by case stated to High Court on law. CA decision binding \u2014 magistrates were in error. Appeal likely to succeed."},
+    {text:"Claire wishes to resolve a commercial dispute with a supplier worth \u00a380,000. Her solicitor advises litigation but a friend recommends arbitration. Claire asks which is better and whether she can be forced into ADR.",
+     prompt:"Identify: (1) The main forms of ADR available. (2) Key advantages and disadvantages of each for this dispute. (3) Whether the court can compel ADR. (4) The best advice for Claire.",
+     steps:["Identify ADR options: negotiation, mediation, conciliation, arbitration","Compare litigation vs arbitration for a \u00a380,000 commercial dispute","Advantages of arbitration: binding, expert arbitrator, private, enforceable (Arbitration Act 1996)","Can courts compel ADR? (Halsey v Milton Keynes [2004] — cannot be forced, but costs sanctions possible)","Advise Claire: arbitration clause in contract? If so, she may be bound. If not, mediation first recommended."],
+     model:"Identify each ADR type and its key feature. For \u00a380,000 commercial dispute: arbitration gives a binding expert decision privately; mediation cheaper but non-binding. Courts cannot compel ADR (Halsey) but failure to attempt it risks adverse costs orders. If no arbitration clause: recommend mediation first, litigation as last resort."},
+    {text:"During a criminal trial in the Crown Court, the judge states in his summing up that, while the jury is not bound by it, he personally believes a particular defence argument is 'legally unsound in light of the Court of Appeal's clear statement in a 2021 case'. The defendant is convicted and wants to appeal.",
+     prompt:"Identify: (1) The precedent status of a Court of Appeal decision on the Crown Court. (2) Whether the judge's direction was legally correct. (3) The grounds and prospects of appeal.",
+     steps:["Is the Crown Court bound by Court of Appeal decisions? Yes \u2014 stare decisis","Was the 2021 CA statement ratio or obiter? This is critical \u2014 only ratio is binding","Did the judge correctly apply binding precedent or misdirect the jury?","Grounds of appeal: misdirection of the jury on the law","Prospects: if the CA statement was ratio and the judge applied it correctly, appeal unlikely to succeed"],
+     model:"Crown Court is bound by CA decisions on points of law. Key question: was the CA statement ratio (binding) or obiter (persuasive only)? If ratio and the judge applied it correctly, the direction was lawful. If obiter, the judge was wrong to present it as settled law. Appeal on misdirection: court will ask whether the direction rendered the conviction unsafe."}
+  ],
+  'criminal-law':[
+    {text:"Dan, angry at his neighbour Victor, pushes him hard against a wall. Victor, unusually fragile due to a bone condition, suffers a broken arm. Dan claims he did not know about Victor's condition and only intended to frighten him.",
+     prompt:"Identify: (1) The most likely charge(s). (2) AR and MR for each. (3) The effect of Victor's condition on causation. (4) Any defences available to Dan.",
+     steps:["Identify possible charges: s.47 OAPA 1861 (ABH) or s.20 (GBH)? Broken arm — which level of harm?","Apply AR for s.47 and s.20: assault/battery → level of harm caused","Apply MR: s.47 only requires MR for the battery; s.20 requires Cunningham foresight of some harm","Apply the thin skull rule (Blaue [1975]): bone condition irrelevant to Dan's knowledge","Consider defences — self-defence or consent available on these facts?","Conclude on the most likely charge"],
+     model:"S.20 most likely — broken arm = GBH. AR: unlawful infliction. MR (Cunningham): did Dan foresee some harm? A hard push clearly creates that foresight. Thin skull (Blaue): D takes V as found — bone condition irrelevant. Conclude: likely s.20 conviction."},
+    {text:"Emma, a nurse, fails to properly check a patient's medication dosage. The patient receives a fatal overdose. Emma claims she was exhausted after a 14-hour shift.",
+     prompt:"Identify: (1) Whether Emma could be charged with gross negligence manslaughter. (2) The Adomako four-stage test applied to these facts. (3) Any defence arguments.",
+     steps:["Duty of care: nurse-patient relationship — clearly established","Breach: failure to check dosage is below the standard of a reasonable nurse","Causation: but for failure to check, the patient would not have received the fatal dose","Gross negligence threshold (Adomako [1994]): jury question — was the breach so grossly negligent as to be criminal?","Does exhaustion affect the analysis? The standard is objective — no.","Conclude: strong case for gross negligence manslaughter"],
+     model:"Apply Adomako four stages in order. Duty clear. Breach: failure to check dosage. Causation: but for failure, death would not have occurred. GNM: jury question — exhaustion does not negate the threshold (objective standard). Conclude: strong case for GNM."},
+    {text:"Karl gets into a fight outside a pub. He punches Liam, causing a deep cut requiring hospital treatment. Karl says Liam had threatened him first and he was acting in self-defence.",
+     prompt:"Identify: (1) Karl's primary liability. (2) AR and MR. (3) Self-defence. (4) Conclusion.",
+     steps:["Identify charge: s.20 OAPA 1861 — wounding (breaking both skin layers)","AR: did Karl wound Liam? Deep cut \u2192 likely wounding","MR (Cunningham): did Karl foresee some harm? Throwing a punch = yes","Self-defence (s.76 CJIA 2008): was force necessary and proportionate?","Conclude: self-defence likely fails on these facts"],
+     model:"S.20 AR and MR established. Self-defence: honest belief that force was necessary + force must be proportionate. Punching in response to verbal threat unlikely to satisfy proportionality. Conclude: Karl likely convicted of s.20."},
+    {text:"Sophie spots her ex-partner's car and, in a rage after discovering he has been spreading lies about her, takes a baseball bat and smashes the windscreen. She is charged with criminal damage. She argues she had a lawful excuse because he deserved it.",
+     prompt:"Identify: (1) The elements of criminal damage. (2) Whether 'lawful excuse' applies. (3) Sophie's mens rea. (4) Any available defences.",
+     steps:["Criminal damage (s.1 Criminal Damage Act 1971): AR = destroying or damaging property belonging to another without lawful excuse","MR: intention or recklessness as to destroying/damaging property (Cunningham recklessness)","Lawful excuse (s.5 CDA 1971): honest belief owner would consent OR acting to protect other property","Does 'he deserved it' amount to lawful excuse? No \u2014 revenge is not a recognised lawful excuse","Any other defences? Intoxication, consent, necessity? None on these facts","Conclude: Sophie is liable for criminal damage"],
+     model:"AR: smashing windscreen = damaging property belonging to another (registered to ex-partner). MR: intentional act = direct intention. Lawful excuse: s.5 CDA 1971 does not cover revenge. No valid defence. Conclude: Sophie is guilty of criminal damage contrary to s.1 CDA 1971."},
+    {text:"Marcus, driving carefully, hits a child who runs into the road from between parked cars. The child dies. The prosecution considers charges. Marcus had no opportunity to brake.",
+     prompt:"Identify: (1) Whether Marcus has committed any criminal offence. (2) Causation analysis. (3) Whether any form of manslaughter applies. (4) Conclusion.",
+     steps:["Is there any voluntary act by Marcus? Or is this a genuine accident?","Causation: was Marcus the factual and legal cause of death? ('But for' and operating/substantial cause)","Gross negligence manslaughter: was Marcus's driving grossly negligent? (Adomako [1994])","Constructive manslaughter: was there an unlawful dangerous act? If not negligent, no unlawful act","Consider whether the child's action breaks the chain of causation","Conclude: no criminal liability if Marcus was driving carefully and the child ran out unexpectedly"],
+     model:"Causation: but for Marcus hitting the child, death would not have occurred \u2014 factual cause established. However, GNM requires the breach to be 'grossly negligent' \u2014 careful driving does not satisfy this threshold. Constructive manslaughter: no unlawful act if driving was lawful. The child's sudden action may not break the chain but establishes no fault in Marcus. Conclude: no criminal liability."}
+  ],
+  'law-making':[
+    {text:"Parliament passes the Public Safety Act 2024, s.3: 'No person shall carry a weapon in a public place.' Ben is a soldier carrying a ceremonial sword in a town centre parade. The prosecution argues s.3 covers him.",
+     prompt:"Identify: (1) Which interpretation rules apply. (2) How each resolves the ambiguity. (3) What aids may be used. (4) The most likely judicial approach.",
+     steps:["Literal rule: does a ceremonial sword on parade fall within 'weapon in a public place'?","Golden rule: would the literal result be absurd or repugnant to Parliament's intent?","Mischief rule (Heydon's Case): what mischief was s.3 targeted at?","Pepper v Hart \u2014 any clear ministerial statement about the intended scope?","Conclude: which approach courts would likely adopt and why"],
+     model:"Literal: covers Ben. Golden: ceremonial use arguably not the mischief. Mischief: targeted at dangerous weapons carried with criminal intent \u2014 Ben's parade excluded. Conclude: mischief or purposive approach most likely; Ben acquitted."},
+    {text:"The Noise Pollution Act 2023 makes it an offence for 'any person to cause excessive noise in residential areas after 11pm.' A hospital runs emergency generators during a power failure, causing noise complaints from neighbours.",
+     prompt:"Identify: (1) Literal application. (2) Whether the golden rule modifies it. (3) What the mischief was. (4) The most defensible conclusion.",
+     steps:["Literal rule: does the hospital fall within 'any person'?","Golden rule (wide): would holding the hospital liable be repugnant to the Act's purpose?","Mischief rule: what was the Act designed to prevent? Residential noise nuisance \u2014 not emergency services","Consider whether courts would imply an exception for genuine emergencies","Conclude: hospital likely exempt on golden or mischief rule grounds"],
+     model:"Literal: hospital technically within scope. Golden (wide): holding emergency hospital generators liable is repugnant to the Act's purpose. Mischief: Act targeted noise nuisance, not emergency responses. Conclude: courts would apply golden or mischief rule to exempt the hospital."},
+    {text:"The Computer Misuse Act 1990 makes it an offence to access computer material 'without authorisation'. A police officer accesses a suspect's social media account using a password obtained from a witness, without a warrant.",
+     prompt:"Identify: (1) Whether the officer had 'authorisation'. (2) Which interpretation rule best applies. (3) The implications for the prosecution.",
+     steps:["Literal: did the officer have authorisation? Password provided but no warrant.","What does 'authorisation' mean? Owner's consent or legal authority (warrant)?","Mischief: was the Act designed to catch police accessing without warrants?","Purposive: what did Parliament intend by 'without authorisation'?","Conclude: officer likely acting without authorisation \u2014 evidence potentially inadmissible"],
+     model:"Authorisation likely means owner's consent or legal authority. Officer had neither. Purposive approach: Act designed to prevent unauthorised access \u2014 police without warrant falls within this. Conclude: officer committed offence; evidence may be excluded."},
+    {text:"A statutory instrument made under the Health Act 2020 requires hospitals to 'report all serious incidents to the Secretary of State within 24 hours'. A hospital reports an incident after 30 hours due to an IT system failure. The Secretary of State seeks to impose a penalty.",
+     prompt:"Identify: (1) The nature and validity of the statutory instrument. (2) Whether the hospital complied. (3) Whether the courts could review the penalty. (4) Controls on delegated legislation.",
+     steps:["Is the statutory instrument valid? Was it made within the scope of the parent Act (ultra vires)?","Does 'within 24 hours' admit any flexibility? Literal rule: no. Purposive: does the purpose require strict compliance?","Is the SI itself lawful? Parliamentary controls: negative or affirmative resolution procedure?","Could the hospital judicially review the penalty? Grounds: substantive ultra vires, procedural unfairness","Conclude: hospital likely failed to comply; but judicial review of the penalty may succeed if SI exceeds its parent Act"],
+     model:"Statutory instruments are valid only within the scope of the enabling Act. Assuming validity, the hospital failed to comply on a literal reading. However, judicial review is available: the court could quash the penalty if the SI was made without proper procedural authority or if applying it strictly defeats the Act's purpose. Conclude: breach established, but the penalty is susceptible to challenge."},
+    {text:"Parliament enacts the Environment (Clean Air) Act 2025. During the parliamentary debates, the Minister stated that the Act was intended to cover 'industrial facilities only'. The Act's text refers to 'any premises'. A domestic householder is prosecuted for garden burning.",
+     prompt:"Identify: (1) How the literal rule applies. (2) How the mischief rule applies. (3) Whether Hansard is admissible. (4) The most likely outcome.",
+     steps:["Literal rule: 'any premises' clearly includes a domestic garden — householder falls within scope","Mischief rule: what mischief was Parliament addressing? Industrial pollution? Domestic burning a different mischief?","Pepper v Hart [1993]: is Hansard admissible? Only where statute is ambiguous and there is a clear ministerial statement","Here: Minister clearly stated 'industrial facilities only' \u2014 Pepper v Hart applies","Purposive approach: Act should be read consistently with Parliament's stated purpose","Conclude: Hansard admissible; 'any premises' should be read as industrial premises only; householder acquitted"],
+     model:"Literal rule: 'any premises' covers domestic garden \u2014 householder is within scope. But: Pepper v Hart [1993] allows courts to use Hansard where ambiguity exists and there is a clear ministerial statement. The Minister's statement is unambiguous \u2014 industrial only. Purposive approach: Parliament did not intend to criminalise domestic burning. Conclude: Hansard admissible; householder acquitted on purposive reading."}
+  ],
+  'tort':[
+    {text:"Paula, a surgeon, operates on Ted using an outdated technique most surgeons have abandoned. Ted suffers permanent nerve damage. Paula argues she followed the practice of a respected minority of surgeons.",
+     prompt:"Identify: (1) Duty of care. (2) Breach \u2014 Bolam and Bolitho. (3) Causation. (4) Remoteness. (5) Any defences available.",
+     steps:["Duty: surgeon-patient \u2014 clearly established (Caparo all three stages satisfied)","Breach: Bolam test \u2014 minority support not automatically exculpatory","Apply Bolitho [1997]: courts can reject minority practice if it lacks a logical basis","Causation: but for the technique, would Ted have suffered this harm? (Barnett test)","Remoteness: is nerve damage a foreseeable type of harm from a surgical procedure? Yes.","Conclude: likely breach \u2014 Bolitho qualifies Bolam where the minority practice is illogical"],
+     model:"Duty established. Breach: Bolam then Bolitho \u2014 is minority practice logically defensible? Abandonment by majority = evidence it is not. Causation: but for the technique, nerve damage would not have occurred. Remoteness: foreseeable type of harm. Conclude: Paula likely liable in negligence."},
+    {text:"Mark, a visitor to a theme park, ignores a clear warning sign and climbs into a restricted area. He falls and suffers serious injuries. An employee had left a gate into the restricted area unlocked.",
+     prompt:"Identify: (1) OLA 1957 or OLA 1984 \u2014 which applies? (2) The effect of the warning sign. (3) Volenti non fit injuria. (4) Contributory negligence.",
+     steps:["Did Mark exceed his permission? If so, he becomes a trespasser \u2014 OLA 1984 applies","OLA 1957 s.2(4): effect of warning sign \u2014 does it discharge the duty?","OLA 1984 s.1(3): knowledge, likelihood, and reasonableness if Mark is a trespasser","Unlocked gate: is this a causative breach? Employer vicariously liable for employee?","Volenti: did Mark accept the risk by ignoring the warning sign?","Contributory negligence: Law Reform (CN) Act 1945 \u2014 damages apportioned"],
+     model:"Mark likely exceeded permission \u2192 trespasser, OLA 1984. Unlocked gate may still be causative breach. Volenti: knowing of risk and climbing anyway = likely volenti. Alternatively, contributory negligence reduces award significantly."},
+    {text:"Sarah is watching a cricket match when a ball is hit over the boundary and strikes her, causing serious eye injury. The cricket ground has no safety nets on the side where Sarah is sitting.",
+     prompt:"Identify: (1) Whether a duty of care exists. (2) Whether there is a breach. (3) Volenti. (4) Conclusion.",
+     steps:["Duty: spectator at cricket ground \u2014 Caparo three stages","Breach: likelihood of ball leaving ground (Bolton v Stone: very low likelihood = no breach on similar facts)","Severity of potential harm (Paris v Stepney): eye injury is severe \u2014 increases the standard","Social utility of cricket as a public recreational activity \u2014 weighs against breach","Volenti: did Sarah accept the risk of attending as a spectator?","Conclude: likely no breach following Bolton v Stone; volenti as an alternative defence"],
+     model:"Duty established. Breach: likelihood very low (Bolton v Stone); high severity (Paris) but social utility of cricket significant. May be breach if safety nets were affordable and risk was known. Volenti: partial defence. Conclude: uncertain \u2014 court may find breach if net cost was low."},
+    {text:"A factory upstream releases chemical waste into a river. Downstream, a fish farm suffers the loss of its entire stock. The factory claims it was using the river in the same way it has for 30 years.",
+     prompt:"Identify: (1) Whether the fish farm has a claim in private nuisance. (2) Whether Rylands v Fletcher applies. (3) The relevance of prescription. (4) Remedies available.",
+     steps:["Private nuisance: unreasonable interference with the use and enjoyment of land \u2014 does chemical release qualify?","Nature of the interference: physical damage to property (loss of fish stock) \u2014 this is the strongest type of nuisance","Rylands v Fletcher [1868]: non-natural use + escape of dangerous thing + damage \u2014 does chemical waste qualify?","Cambridge Water [1994]: foreseeability of damage required for Rylands \u2014 chemical harm to a fish farm?","Prescription: 30 years' use \u2014 does this give the factory a defence? Only if interference was continuous and without interruption for 20+ years (Sturges v Bridgman)","Remedies: damages for lost stock; injunction to stop future releases"],
+     model:"Private nuisance: physical damage to fish stock = strongest form of nuisance claim. Rylands: chemical waste is non-natural use; escape occurred; Cambridge Water adds foreseeability of harm to a fish farm \u2014 this is likely foreseeable. Prescription: 30 years' use is not a complete defence if the nuisance only became actionable when the fish farm arrived (Sturges v Bridgman). Conclude: strong claim in both nuisance and Rylands; injunction and damages available."},
+    {text:"Nina develops a psychiatric condition after witnessing a serious road accident in which her close friend was killed. Nina was not physically in danger herself. She arrived at the scene two minutes after the accident occurred.",
+     prompt:"Identify: (1) Whether Nina owes a duty of care as a secondary victim. (2) The Alcock control mechanisms applied. (3) Whether her claim is likely to succeed. (4) Reform arguments.",
+     steps:["Primary or secondary victim? Nina was not physically endangered \u2014 she is a secondary victim (Alcock [1992])","Three Alcock proximity requirements: (1) close tie of love and affection with primary victim; (2) physical proximity to the accident or its immediate aftermath; (3) perceived the accident through own unaided senses","Close friend: a close friend may qualify (Lord Keith left this open in Alcock \u2014 requires evidence of close relationship beyond mere friendship)","Immediate aftermath: arriving 2 minutes after the accident \u2014 compare with McLoughlin v O'Brian [1983] where the claimant arrived at hospital after the accident and still recovered","Perception: Nina saw the aftermath, not the accident itself \u2014 is this sufficient?","Reform: Law Commission 1998 recommends a general foreseeability test"],
+     model:"Nina is a secondary victim. Three Alcock conditions: (1) Close friend \u2014 borderline; court may require evidence of a close tie beyond ordinary friendship; (2) Immediate aftermath \u2014 2 minutes post-accident is likely sufficient (McLoughlin); (3) Own senses \u2014 yes. Conclusion: the close tie condition is the weak point. Claim may fail unless the court accepts that a very close friendship qualifies. Reform: Law Commission [1998] recommends replacing Alcock control mechanisms with a general foreseeability test."}
+  ],
+  'nature-of-law':[
+    {text:"Parliament is considering legalising assisted dying for terminally ill adults. Critics argue this contradicts fundamental moral principles and risks abuse. Supporters argue law should reflect changing moral consensus and respect individual autonomy.",
+     prompt:"Identify: (1) The Hart-Devlin debate applied here. (2) Mill's harm principle. (3) Rawls' perspective. (4) The role of judicial creativity if Parliament does not act.",
+     steps:["Frame the law/morality question: Devlin (enforce shared morality) vs Hart/Mill (harm principle)","Apply Devlin: does legalising assisted dying threaten social cohesion? Articulate the counter-argument.","Apply Mill: does it harm others? Who bears the harm?","Rawls: what would rational people behind the veil of ignorance choose regarding end-of-life autonomy?","Judicial creativity: could courts develop the law (R v R precedent)? What are the limits?","Conclude with a justified position, engaging with counter-arguments"],
+     model:"Hart/Mill framework more compelling \u2014 assisted dying involves a consenting adult; Devlin's social disintegration argument is speculative here. Rawls supports autonomy. Conclude: law should be reformed by Parliament; judicial creativity (R v R) has limits in highly contested political questions."},
+    {text:"James is convicted of possession of cannabis for personal use. He argues the law is unjust because it criminalises a choice that harms only himself.",
+     prompt:"Identify: (1) Whether the law is formally just. (2) Whether it is substantively just. (3) Mill's harm principle applied. (4) Rawls' distributive justice perspective.",
+     steps:["Formal justice: is the law applied consistently? Yes \u2014 but is it substantively fair?","Substantive justice: is the outcome morally correct? James harms only himself.","Apply Mill's harm principle: no harm to others \u2014 should law restrict this?","Rawls: would rational people behind the veil of ignorance criminalise personal drug use?","Counter-arguments: social costs, addiction, drug trafficking harm, Devlin's social morality","Conclude: is English law just in this instance?"],
+     model:"Formal justice: yes \u2014 law applied consistently. Substantive justice: arguable no under Mill \u2014 only self-harm. Rawls: ambiguous \u2014 social cost argument. Counter: Devlin argues drugs harm social fabric. Conclude: English law is formally just but arguably substantively unjust under Mill's harm principle."},
+    {text:"A judge in a landmark case decides that a company cannot claim a human right under the Human Rights Act 1998 despite the statutory wording appearing to allow it. The decision conflicts with earlier High Court authority.",
+     prompt:"Identify: (1) The judicial creativity issues. (2) Whether the judge was right to depart from earlier authority. (3) The implications for law and morality.",
+     steps:["Judicial creativity: is the judge making or finding the law?","Precedent: was the earlier High Court authority binding on this judge?","HRA 1998 s.3: the interpretive duty \u2014 must read legislation compatibly with Convention rights","Law and morality: is it just for companies to hold human rights? (nature of law debate)","Separation of powers: is this a judicial or a legislative function?","Conclude: was the judge's approach legitimate?"],
+     model:"Judicial creativity: judge clearly making law \u2014 controversial (R v R precedent). HRA s.3: strong interpretive duty exists. Morality: companies are legal fictions \u2014 human rights designed for natural persons; excluding them may be substantively just. Conclude: judge's approach is within the judicial creativity tradition but pushes its limits."},
+    {text:"Parliament is debating whether to make it a criminal offence to pay for sex. Supporters argue it is morally wrong and harms women. Opponents argue it targets a private consensual transaction between adults.",
+     prompt:"Identify: (1) Devlin's enforcement of morality argument applied. (2) Hart and Mill's counter-arguments. (3) Whether this is a matter of law or morality. (4) How Rawls would approach it.",
+     steps:["Devlin: is paying for sex part of society's shared moral code? Does criminalising it prevent social disintegration?","Hart: is this a private act causing harm to others? If the transaction is consensual, Mill's harm principle suggests no criminalisation","Key factual dispute: does sex work inherently involve harm? (coercion, trafficking, exploitation)","Rawls: behind the veil of ignorance, would rational people choose to criminalise consensual adult transactions?","Current English law: not currently an offence to pay for sex (though soliciting is) \u2014 moral debate unresolved","Conclude: this is a live law/morality debate; Hart/Mill vs Devlin with no clear answer \u2014 argue a justified position"],
+     model:"Devlin: shared moral view that paying for sex is wrong justifies criminalisation. Hart/Mill: if truly consensual, no harm to others \u2014 law should not intervene. The empirical dispute over whether sex work is ever truly consensual is key. Rawls: uncertain \u2014 people ignorant of their position might choose protection from exploitation over freedom of transaction. Conclude: the law/morality boundary is contested here; harm principle suggests caution about criminalising, but evidence of exploitation supports intervention."},
+    {text:"Lucy's neighbour has been burning garden waste every weekend, making Lucy's garden unusable on the only days she can enjoy it. The smoke causes no physical damage but significantly affects her quality of life. Lucy asks whether she has any legal remedy and whether this is 'fair'.",
+     prompt:"Identify: (1) Whether private nuisance applies. (2) Whether the law achieves a just outcome on these facts. (3) How formal and substantive justice relate here. (4) What Rawls would say about the outcome.",
+     steps:["Private nuisance: is this an unreasonable interference with Lucy's use and enjoyment of land?","Factors: locality, duration (every weekend), sensitivity of Lucy, malice of neighbour?","Does the law provide an adequate remedy? Injunction and/or damages","Is the outcome formally just? \u2014 both parties have equal rights to use their land","Is the outcome substantively just? \u2014 does the law adequately protect Lucy's enjoyment?","Rawls: would rational people behind the veil of ignorance choose this nuisance framework?"],
+     model:"Private nuisance: weekly smoke causing significant interference with use and enjoyment \u2014 strong claim. Locality, duration, and lack of malice relevant to reasonableness. Formal justice: both parties' rights considered equally. Substantive justice: if the law grants an injunction, Lucy is protected \u2014 substantively just. Rawls: people ignorant of whether they are the polluter or the victim would likely choose a system that balances both rights \u2014 nuisance law does this. Conclude: law achieves a broadly just outcome on these facts."}
+  ],
+  'contract':[
+    {text:"Sarah agrees to sell her vintage car to Mark for \u00a315,000. Mark pays a \u00a32,000 deposit. Before delivery, Sarah is offered \u00a320,000 by another buyer. She tells Mark the contract is 'off'.",
+     prompt:"Identify: (1) Is there a valid contract? (2) Type of breach. (3) Mark's remedies. (4) Any consideration or privity issues.",
+     steps:["Formation: valid offer (Sarah), acceptance (Mark), consideration (deposit + price), ITCLR (commercial \u2014 presumed)","Type of breach: anticipatory breach \u2014 Sarah repudiates before the delivery date","Mark's options: accept repudiation and claim damages now, or wait for the delivery date","Damages: expectation measure \u2014 loss of bargain (\u00a35,000); Hadley v Baxendale remoteness","Specific performance: is the vintage car unique? Courts may award for unique/personal property","Mitigation: Mark must take reasonable steps to find an alternative"],
+     model:"Formation proved. Anticipatory breach (Hochster v De La Tour). Remedies: damages (Hadley \u2014 \u00a35,000 loss of bargain); specific performance possible if car is truly unique. Mark must mitigate. Conclude: damages most likely; specific performance if car is irreplaceable."},
+    {text:"Tom agrees to paint Raj's house for \u00a33,000. Halfway through, Tom demands \u00a34,500 or he will stop. Raj reluctantly agrees. Tom completes the work. Raj now refuses to pay the extra \u00a31,500.",
+     prompt:"Identify: (1) Is there consideration for the extra \u00a31,500? (2) Williams v Roffey applied. (3) Whether Raj's agreement was under economic duress. (4) Enforceability of the modification.",
+     steps:["Existing duty rule: Tom already obligated to paint for \u00a33,000 \u2014 no fresh consideration in traditional doctrine?","Apply Williams v Roffey [1990]: did Raj gain a practical benefit from Tom completing the work?","Economic duress: was Raj's agreement truly voluntary? (Atlas Express v Kafco)","If duress: Raj can rescind the modification \u2014 Pao On v Lau Yiu Long test","Conclude: is the extra \u00a31,500 enforceable?"],
+     model:"Williams v Roffey: practical benefit (avoiding disruption) may constitute consideration. However, economic duress: Tom threatened to stop mid-performance \u2014 illegitimate pressure. Duress makes the modification voidable. Conclude: Raj can likely refuse the extra \u00a31,500."},
+    {text:"Anna orders a bespoke wedding dress from a dressmaker for \u00a3800 upfront. Two weeks before the wedding, the dressmaker's workshop floods and she says she cannot complete the dress. Anna claims the full cost of an emergency replacement dress (\u00a32,400).",
+     prompt:"Identify: (1) Whether the contract is frustrated. (2) The effect of frustration. (3) Anna's remedies. (4) Remoteness of the emergency replacement cost.",
+     steps:["Is this frustration? A flood is a supervening event beyond the parties' control (Davis Contractors test)","Was performance radically different or impossible? A bespoke dress cannot be completed elsewhere.","Law Reform (Frustrated Contracts) Act 1943: Anna can recover the \u00a3800 deposit; dressmaker can claim for work done","Emergency replacement cost (\u00a32,400): is this within reasonable contemplation at the time of contracting? (Hadley)","Was the risk of needing an emergency replacement foreseeable at the time of contracting?","Conclude: frustrated contract; Anna recovers \u00a3800; \u00a32,400 likely too remote"],
+     model:"Frustration established (Davis Contractors: radically different/impossible). LR(FC)A 1943: deposit recoverable; dressmaker may retain for work already done. Emergency cost: Hadley test \u2014 not within reasonable contemplation at contracting. Conclude: Anna recovers \u00a3800; the emergency cost is too remote."},
+    {text:"A consumer buys a new television from an electronics retailer. The retailer's standard terms contain a clause excluding all liability for any defects. The television breaks down after one week. The retailer refuses to repair or replace it, relying on the exclusion clause.",
+     prompt:"Identify: (1) Whether the exclusion clause is incorporated. (2) Whether it is valid under the Consumer Rights Act 2015. (3) The consumer's remedies. (4) The difference between CRA 2015 and UCTA 1977.",
+     steps:["Incorporation: was the clause incorporated by signature, notice, or previous dealings? (L'Estrange v Graucob)","Consumer Rights Act 2015: applies to B2C contracts \u2014 does the clause exclude liability for breach of the implied term of satisfactory quality? (s.9 CRA 2015)","CRA 2015 s.57: a term excluding the trader's liability for breach of the statutory rights is not binding on the consumer \u2014 automatically unfair","UCTA 1977 vs CRA 2015: UCTA applies to B2B; CRA applies to B2C and is stricter","Consumer's remedies: right to short-term reject (30 days), repair or replacement, price reduction or final right to reject","Conclude: exclusion clause is void under CRA 2015; consumer entitled to remedy"],
+     model:"Incorporation: signed or clearly displayed terms likely incorporated. However, CRA 2015 s.57: any term excluding liability for breach of s.9 (satisfactory quality) is automatically not binding on the consumer \u2014 it does not matter whether it was incorporated. UCTA 1977 does not apply (B2C contract). Consumer's remedies: one week old \u2014 consumer can short-term reject (s.20) and claim full refund. Conclude: exclusion clause void; refund available."},
+    {text:"Grace and Henry have been in a relationship for 10 years. Henry promises Grace that if she gives up her job to care for their children, he will pay her \u00a32,000 per month. Grace gives up her job. Henry stops paying after 6 months and argues there is no binding contract.",
+     prompt:"Identify: (1) Whether there is a binding contract. (2) Intention to create legal relations in domestic agreements. (3) Whether promissory estoppel could assist Grace. (4) Grace's position.",
+     steps:["ITCLR: is there an intention to create legal relations? Balfour v Balfour [1919] \u2014 domestic agreements presumed not legally binding","Can the presumption be rebutted? (Merritt v Merritt [1970] \u2014 where parties deal at arm's length, even if domestic, courts may find ITCLR)","Has Grace provided consideration? She gave up her job \u2014 arguably good consideration for Henry's promise","Promissory estoppel: if no contract, did Henry make a clear promise? Did Grace rely on it to her detriment?","Is promissory estoppel a cause of action or a shield? (cannot found an independent claim \u2014 Combe v Combe)","Conclude: contract uncertain; promissory estoppel may assist as a defence if Henry sues, but cannot found Grace's claim"],
+     model:"ITCLR: Balfour presumption applies. But if parties were dealing seriously with financial consequences (Grace giving up career), Merritt may rebut the presumption \u2014 depends on circumstances and formality. Consideration: giving up employment is good consideration. Promissory estoppel: Grace relied to her detriment \u2014 Henry estopped from withdrawing the promise during the agreed period. Limit: estoppel cannot found an independent cause of action (Combe v Combe). Conclude: uncertain whether binding contract; promissory estoppel limits Henry's ability to simply stop paying."}
+  ],
+};
+
+const ESSAYS={
+  'legal-system':[
+    {q:"'The doctrine of precedent achieves certainty at the expense of justice.' Critically evaluate.",
+     scaffold:"Intro: Define precedent; identify the tension between certainty and justice.\nP1: Case for certainty \u2014 consistency, predictability, equality before law; Practice Statement used sparingly.\nP2: Injustice through rigidity \u2014 bound by bad decisions; distinguishing as an imperfect escape valve.\nP3: Reform mechanisms \u2014 Practice Statement 1966, CA exceptions (Young v Bristol), prospective overruling debate.\nConclusion: Does the system have adequate flexibility? Argue: certainty is the default but escape valves are sufficient if properly used.",
+     model:"The doctrine of precedent serves the foundational principle of equality before the law: like cases decided alike. This creates certainty \u2014 parties can plan their affairs and lawyers can advise confidently. Yet certainty purchased at the price of injustice is no virtue. The Court of Appeal's self-binding rule (Young v Bristol Aeroplane Co [1944]) has produced outcomes where manifestly incorrect decisions bind inferior courts for years. The Practice Statement [1966] offers an escape but has been used sparingly. The real safety valve is distinguishing, which allows creative departure without formal overruling. On balance, the system achieves workable certainty with sufficient flexibility \u2014 the greater problem is not rigidity but access to courts that would resolve the tension."},
+    {q:"'LASPO 2012 has created a justice system that serves only those who can afford it.' Critically evaluate.",
+     scaffold:"Intro: LASPO 2012 context \u2014 what it changed and why.\nP1: Access gap \u2014 rise in litigants in person; sectors removed (welfare, employment, housing).\nP2: Conditional fee agreements and litigation funding \u2014 partial mitigation but favour high-value claims.\nP3: Alternative responses \u2014 ADR, McKenzie friends, law centres; are they adequate substitutes?\nConclusion: LASPO created a two-tier system; conditional fees help only where litigation is profitable; the access to justice gap is real and largely unaddressed.",
+     model:"The Legal Aid, Sentencing and Punishment of Offenders Act 2012 removed legal aid from most civil matters, leaving individuals to navigate complex legal proceedings without representation. The consequence has been a dramatic rise in litigants in person. While conditional fee agreements were intended to fill the gap, they favour high-value claims where solicitors can recover a profitable success fee. A benefits claimant challenging a housing decision has no such recourse. The justice gap is not merely theoretical \u2014 it is experienced daily by those who have a legal right but no means to enforce it."},
+    {q:"'The jury system is an essential safeguard of civil liberties that must be preserved.' Critically evaluate.",
+     scaffold:"Intro: Role of juries in criminal justice; constitutional significance.\nP1: Arguments for juries \u2014 community judgment, independence from state, equity verdicts (Bushell's Case [1670]).\nP2: Arguments against \u2014 no legal training, perverse verdicts, media influence, complexity in fraud cases.\nP3: Reform \u2014 jury-less trials in complex fraud (CJA 2003); judge-only as alternative; hybrid models.\nConclusion: Jury trial is a vital safeguard but reform is needed in complex cases \u2014 blanket abolition would be disproportionate.",
+     model:"The jury embodies a fundamental principle: citizens should be judged by their peers, not by the state alone. This independence was established in Bushell's Case [1670], where the court held that jurors could not be punished for their verdict. The right to jury trial in serious criminal cases acts as a constitutional check on government power. Yet the system has real weaknesses. Jurors lack legal training and may be influenced by prejudice, emotion, or media coverage (R v Taylor and Taylor [1993]). In complex fraud cases, jurors may struggle with months of technical evidence. The Criminal Justice Act 2003 provides for judge-only trials in fraud cases, a proportionate reform that preserves jury trial where it matters most. Abolition would be a disproportionate response to identifiable weaknesses; targeted reform is the better answer."},
+    {q:"'Alternative dispute resolution should be the default method of resolving civil disputes, with litigation reserved as a last resort.' Critically evaluate.",
+     scaffold:"Intro: Define ADR; its growth and the policy context (civil justice reforms, Woolf reforms).\nP1: Advantages of ADR \u2014 cost, speed, confidentiality, relationship preservation, specialist arbitrators.\nP2: Disadvantages \u2014 no binding precedent; unequal bargaining power; arbitration clauses in standard form contracts.\nP3: Limits of making ADR compulsory \u2014 Halsey v Milton Keynes [2004]; HRA Art 6 right to a fair trial.\nConclusion: ADR should be strongly encouraged but not mandated; certain disputes require the public adjudication of litigation.",
+     model:"The Woolf reforms and the Civil Procedure Rules 1998 explicitly encouraged ADR as a means of reducing the cost and delay of civil litigation. For many disputes \u2014 particularly commercial ones \u2014 ADR offers genuine advantages: speed, privacy, commercial expertise, and preservation of business relationships. Mediation, in particular, has a high settlement rate. However, the proposition that ADR should be the default raises serious concerns. In Halsey v Milton Keynes [2004], the Court of Appeal held that compelling parties to use ADR would infringe the Article 6 ECHR right to a court determination. More fundamentally, ADR produces no binding precedent: it resolves individual disputes but does not develop the law. For disputes involving public interest, civil rights, or the clarification of legal principle, litigation is not merely appropriate \u2014 it is essential."}
+  ],
+  'criminal-law':[
+    {q:"'The law of voluntary manslaughter inadequately addresses the situations in which it is claimed.' Critically evaluate.",
+     scaffold:"Intro: Voluntary manslaughter as a partial defence reducing murder to manslaughter \u2014 rationale.\nP1: Loss of control (CJA 2009) \u2014 improvements on provocation but qualifying triggers still too narrow.\nP2: Diminished responsibility \u2014 'abnormality of mental functioning' clearer but overly medicalised.\nP3: Law Commission proposals \u2014 restructuring homicide; why Parliament has not acted.\nConclusion: Both defences improved but neither fully achieves justice \u2014 reform still needed.",
+     model:"The Coroners and Justice Act 2009 replaced provocation with loss of control, attempting to address the criticism that provocation was too easily satisfied by trivial incidents. The requirement for a qualifying trigger \u2014 either fear of serious violence or things of an extremely grave character \u2014 narrows the defence. This is arguably progress. However, the exclusion of cases where D incited the trigger, and the objective requirement that a person of D's sex and age with normal tolerance would have reacted similarly, still creates anomalies. The defence remains poorly suited to cases of sustained domestic abuse where the killing occurs during a 'calm' moment (Herring). The law is improved but imperfect."},
+    {q:"'The mens rea requirements for non-fatal offences against the person lack coherence and are in urgent need of reform.' Critically evaluate.",
+     scaffold:"Intro: The hierarchy of s.18, s.20, s.47 OAPA 1861 \u2014 an ancient Act for modern scenarios.\nP1: Inconsistency in MR \u2014 s.47 requires no MR as to the ABH; s.20 requires foresight of some harm; s.18 requires specific intent.\nP2: Problems \u2014 archaic language; Ireland/Burstow extending to psychiatric harm through judicial gap-filling.\nP3: Law Commission 1993 Draft Criminal Code and 2015 proposals.\nConclusion: OAPA 1861 unfit for purpose; a codified offences statute with clear MR per offence is overdue.",
+     model:"The Offences Against the Person Act 1861 was not designed as a coherent statement of criminal law \u2014 it was a consolidation of earlier statutes using Victorian language. The result is a hierarchy of offences whose mens rea requirements are internally inconsistent. Under s.47, a defendant can be convicted of occasioning actual bodily harm without any mens rea as to the harm itself \u2014 merely intending or being reckless as to the battery is sufficient (R v Roberts [1971]). Yet under s.20, Cunningham recklessness as to some harm is required. The Law Commission has recommended reform repeatedly; Parliament has resisted. The OAPA 1861 is unfit for purpose."},
+    {q:"'The defence of self-defence under s.76 CJIA 2008 adequately protects those who use force in genuine emergencies.' Critically evaluate.",
+     scaffold:"Intro: Scope of s.76 CJIA 2008; the two limbs of self-defence: necessity and proportionality.\nP1: Honest belief test \u2014 subjective standard protects genuinely mistaken defendants (Williams [1984]).\nP2: Proportionality \u2014 objective test: 'a person acting for a legitimate purpose may not be able to weigh to a nicety' (Palmer [1971]). Does s.76 give adequate latitude?\nP3: Problem areas \u2014 domestic abuse victims who kill in pre-emptive strikes; battered woman syndrome; reform proposals.\nConclusion: s.76 is broadly fair but fails victims of sustained domestic abuse who act pre-emptively \u2014 targeted reform needed.",
+     model:"Section 76 CJIA 2008 codified the common law defence of self-defence and clarified two key elements: whether the defendant genuinely believed force was necessary (subjective), and whether the force used was proportionate in the circumstances as the defendant believed them to be (objective). The honest belief test protects defendants who make genuine mistakes under pressure. The proportionality test explicitly acknowledges that people acting in emergencies cannot 'weigh to a nicety' the precise level of force required (Palmer v R [1971]). However, the defence fails those who kill abusers in anticipation of future violence rather than in response to an immediate threat. Loss of control (CJA 2009) provides a partial answer but remains imperfect. A 'battered woman's defence' or a broader pre-emptive self-defence ground would better protect victims of sustained abuse."},
+    {q:"'Strict liability offences serve an important public function and are justified despite imposing liability without fault.' Critically evaluate.",
+     scaffold:"Intro: Define strict liability; distinguish from absolute liability; examples (Gammon v AG of Hong Kong [1985]).\nP1: Justification \u2014 public protection (food safety, road traffic, environmental); ease of prosecution; deterrence.\nP2: Critique \u2014 no mens rea required; punishment without fault; morally unjust in principle; undermines criminal law's censuring function.\nP3: Presumption of MR (Sweet v Parsley [1970]); how courts approach ambiguous statutes.\nConclusion: Strict liability is justified where public protection is paramount and where the defendant is in a position to take precautions \u2014 but its use should be limited and proportionate.",
+     model:"Strict liability offences dispense with the requirement for mens rea, imposing criminal liability for the act itself regardless of the defendant's intention or knowledge. The Privy Council in Gammon v Attorney General of Hong Kong [1985] identified factors suggesting strict liability: the offence is quasi-criminal; it involves a matter of social concern; the Act's purpose is to encourage vigilance. This justification is most persuasive in contexts such as food safety and environmental regulation, where the defendant is in a superior position to prevent harm and where proof of intention would be practically impossible. However, the moral critique is powerful: criminal law's distinctive function is to censure blameworthy conduct. Punishing a person who took every reasonable precaution undermines the law's moral authority. The House of Lords in Sweet v Parsley [1970] established a presumption that mens rea is required unless Parliament clearly excludes it. This presumption is the appropriate check on the over-extension of strict liability."}
+  ],
+  'law-making':[
+    {q:"'Statutory interpretation requires judges to make law, not merely find it.' Critically evaluate.",
+     scaffold:"Intro: Frame the debate \u2014 interpretation as mechanical vs creative judicial function.\nP1: Literal rule \u2014 courts as automata applying clear text; critique: absurdity (Whiteley).\nP2: Mischief and purposive \u2014 judges find Parliament's intent (Smith v Hughes); Pepper v Hart acknowledges judicial engagement.\nP3: HRA 1998 s.3 \u2014 creative reinterpretation (Ghaidan v Godin-Mendoza) is unambiguously judicial law-making.\nConclusion: All interpretation beyond the literal involves judicial law-making in degree \u2014 the question is legitimacy, not whether it occurs.",
+     model:"Lord Denning once observed that the task of statutory interpretation is 'to find out the intention of Parliament.' This seemingly modest aspiration conceals a radical proposition: whenever a judge chooses one meaning over another \u2014 whenever they apply the mischief rule to give a statute a broader or narrower scope than its words suggest \u2014 they are making law. The literal rule attempts to avoid this by confining courts to the text, but as Whiteley v Chappell [1868] demonstrates, mechanical application can produce outcomes Parliament never envisaged. The HRA 1998 s.3 duty to interpret legislation compatibly with Convention rights has pushed judicial creativity further still \u2014 in Ghaidan v Godin-Mendoza [2004], the House of Lords read words into a statute that were not there. The conclusion is unavoidable: judicial interpretation is judicial law-making."},
+    {q:"'Delegated legislation is a necessary but insufficiently controlled aspect of the English legal system.' Critically evaluate.",
+     scaffold:"Intro: Define delegated legislation; three main forms; rationale for its existence.\nP1: Necessity \u2014 volume of legislation, technical expertise, flexibility and speed.\nP2: Inadequate control \u2014 affirmative/negative resolution limits; Henry VIII clauses; scope for abuse.\nP3: Judicial control \u2014 ultra vires review; procedural challenge; limits of judicial review.\nConclusion: Delegated legislation is essential but democratic accountability is weak; Henry VIII clauses are particularly problematic.",
+     model:"Parliament cannot legislate for every contingency \u2014 the volume and technicality of modern governance would overwhelm any legislature. Delegated legislation fills this gap, allowing ministers and local authorities to create binding rules with speed and expertise. Yet this efficiency comes at a democratic cost. The negative resolution procedure \u2014 under which a statutory instrument becomes law unless Parliament votes to annul it within forty days \u2014 places the burden of scrutiny on Parliament to act, when the default is inaction. Henry VIII clauses, which allow ministers to amend primary legislation by statutory instrument, are particularly troubling: they permit the executive to modify Acts of Parliament with minimal parliamentary oversight. The law is necessary; its controls are inadequate."},
+    {q:"'The literal rule of statutory interpretation is the most appropriate approach for courts to adopt.' Critically evaluate.",
+     scaffold:"Intro: Define the literal rule; its appeal in a parliamentary democracy.\nP1: Arguments for \u2014 certainty, democratic legitimacy, judges apply rather than make law.\nP2: Arguments against \u2014 produces absurdity (Whiteley v Chappell); ignores Parliamentary intent; unjust outcomes.\nP3: Alternatives \u2014 golden rule, mischief rule, purposive; which better serves the law's purposes?\nConclusion: The literal rule is the least appropriate default \u2014 purposive or mischief approach better serves Parliament's intent without sacrificing certainty.",
+     model:"The literal rule has a simple democratic appeal: in a parliamentary democracy, unelected judges should give effect to the words Parliament has chosen, not substitute their own view of what Parliament meant. If Parliament uses ambiguous language, it is Parliament's fault \u2014 not the court's problem to solve. However, this argument proves too much. Language is inherently ambiguous; context is always necessary to determine meaning. The literal rule does not avoid interpretation \u2014 it merely performs it badly. Whiteley v Chappell [1868] demonstrates the absurdity that results: impersonating a dead voter was not an offence because the dead man was not 'a person entitled to vote.' Parliament plainly did not intend this result. The mischief rule, by contrast, asks what Parliament was trying to achieve. This is not less democratic \u2014 it is more faithful to Parliament's actual purpose."},
+    {q:"'The Law Commission has failed in its primary function of keeping the law under review and recommending reform.' Critically evaluate.",
+     scaffold:"Intro: Role of the Law Commission (Law Commissions Act 1965); mandate to keep law under review.\nP1: Successes \u2014 Law Reform (Frustrated Contracts) Act 1943; Consumer Rights Act 2015; Coroners and Justice Act 2009 (loss of control).\nP2: Failures \u2014 codification of criminal law rejected; OAPA 1861 reform ignored; property law recommendations not enacted.\nP3: Structural problems \u2014 Parliament not obliged to implement recommendations; lack of resources; political sensitivity of some reforms.\nConclusion: The Law Commission does its job well but is undermined by Parliament's failure to implement recommendations \u2014 the fault lies with Parliament, not the Commission.",
+     model:"The Law Commission was created by the Law Commissions Act 1965 with a mandate to keep the law under review and recommend reform. On this basis, it has been remarkably productive: it has produced over 240 reports, resulting in significant legislation including the Contracts (Rights of Third Parties) Act 1999 and reforms to the law of manslaughter (CJA 2009). However, its most ambitious recommendations have been ignored. The 1993 Draft Criminal Code \u2014 a comprehensive attempt to codify English criminal law \u2014 was never enacted. The reform of the OAPA 1861, recommended repeatedly, has not been implemented. These failures reflect not a weakness in the Law Commission's work, which is generally of high quality, but Parliament's reluctance to commit legislative time to systematic law reform when the immediate political dividend is low. The Commission is not failing; Parliament is failing the Commission."}
+  ],
+  'tort':[
+    {q:"'The rules governing recovery of damages for psychiatric injury in negligence are arbitrary and unjust.' Critically evaluate.",
+     scaffold:"Intro: Why psychiatric injury treated differently \u2014 floodgates; causation difficulties; historical suspicion.\nP1: Primary victims (Page v Smith) \u2014 reasonable foreseeability of physical impact sufficient.\nP2: Secondary victims (Alcock) \u2014 three proximity requirements; each critiqued for arbitrariness.\nP3: Reform \u2014 Law Commission 1998; unified foreseeability test?\nConclusion: Current law historically developed and inconsistent \u2014 a unified foreseeability test would be fairer and more principled.",
+     model:"The law's treatment of psychiatric injury reveals an uncomfortable truth: English negligence law is not a coherent system of principles but an accretion of policy decisions dressed in the language of legal tests. The distinction between primary victims (Page v Smith [1996]) and secondary victims (Alcock v Chief Constable of South Yorkshire [1992]) is itself a judicial creation. A secondary victim must satisfy three proximity requirements \u2014 closeness of relationship, physical proximity to the accident, and perception through their own unaided senses. Each criterion produces arbitrary results: a rescuer may recover or not depending on classification; a parent who learns of their child's death by telephone cannot recover. The Law Commission (1998) recommended a more flexible foreseeability approach. Parliament has not acted. The law remains unjust."},
+    {q:"'The law of negligence strikes an appropriate balance between protecting claimants and not overburdening defendants.' Critically evaluate.",
+     scaffold:"Intro: Tension between corrective justice (compensate harm) and floodgates/chilling effect.\nP1: Caparo test as appropriate balance \u2014 three stages filter spurious claims; flexibility.\nP2: Areas where balance fails claimants \u2014 pure economic loss; psychiatric injury controls; public authority immunity.\nP3: Areas where balance fails defendants \u2014 litigation culture; impact on NHS and public services; defensive practice.\nConclusion: Balance broadly appropriate for physical damage; tips against claimants in economic loss and psychiatric injury.",
+     model:"The three-stage Caparo test was designed as a brake on the expansion of negligence liability. Requiring foreseeability, proximity, and that it be fair, just, and reasonable to impose duty gives courts the tools to filter out claims that would impose disproportionate burdens. Yet the application of these criteria has been neither consistent nor principled. The 'fair, just, and reasonable' stage has been used to deny recovery in cases where harm was both foreseeable and proximate, particularly for public authorities (X v Bedfordshire). This is not balance \u2014 it is exclusion dressed as principle. On balance, the system protects against the most egregious cases but produces unpredictable outcomes at the margins."},
+    {q:"'Occupiers' liability law fails to achieve a fair balance between the rights of landowners and those of people who enter their land.' Critically evaluate.",
+     scaffold:"Intro: Two-statute framework \u2014 OLA 1957 (visitors) and OLA 1984 (trespassers); rationale for treating them differently.\nP1: OLA 1957 \u2014 common duty of care; effect of warnings and exclusions; broad protection for visitors.\nP2: OLA 1984 \u2014 three-part threshold for duty to trespassers; limited protection; particular concern for child trespassers.\nP3: Balance analysis \u2014 is it fair to limit trespassers' protection so severely? Is it fair to impose such wide duties on occupiers?\nConclusion: OLA 1957 broadly fair; OLA 1984 too restrictive where child trespassers are foreseeable \u2014 reform needed.",
+     model:"The Occupiers' Liability Act 1957 imposes a common duty of care on occupiers towards their lawful visitors: a duty to take such care as is reasonable in all the circumstances to see that the visitor will be reasonably safe for the purposes for which they are invited. This is a broad and generally fair duty. The OLA 1984, by contrast, imposes a duty to trespassers only where the occupier knows of the danger, knows or has reasonable grounds to believe that trespassers may come near it, and the risk is one against which it is reasonable to offer some protection. This three-part test is more difficult to satisfy than the 1957 duty. In the context of child trespassers \u2014 children who enter land attracted by an obvious hazard such as a swimming pool or railway line \u2014 the 1984 Act's protection may be insufficient. The law creates a formal distinction between visitors and trespassers that is morally defensible in principle but produces unjust outcomes for vulnerable trespassers."},
+    {q:"'The tort of private nuisance inadequately protects individuals from interference with the use and enjoyment of their land.' Critically evaluate.",
+     scaffold:"Intro: Define private nuisance; the unreasonableness test and its factors.\nP1: Strengths \u2014 flexible unreasonableness test; injunction available; physical damage always actionable.\nP2: Weaknesses \u2014 only those with a proprietary interest can sue (Hunter v Canary Wharf); locality principle may deny recovery in industrial areas.\nP3: Interaction with Rylands v Fletcher and negligence \u2014 gaps in coverage?\nConclusion: Private nuisance is a useful but incomplete remedy; the proprietary interest requirement and locality principle limit its effectiveness.",
+     model:"Private nuisance protects the right to use and enjoy one's land without unreasonable interference from neighbouring land. Its flexibility is its strength: courts weigh up the nature of the interference, the locality, the duration, and the social utility of the defendant's activity to determine whether the interference was unreasonable. Physical damage to property is always actionable; interference with amenity requires a higher threshold. However, the tort has significant limitations. Following Hunter v Canary Wharf [1997], only those with a proprietary interest in the affected land can sue \u2014 a spouse or child who suffers from the nuisance has no independent claim. The locality principle means that residents of industrial areas may be denied recovery for interference that would be actionable in a residential neighbourhood. These limitations leave gaps in protection that the law of negligence may not fill, since nuisance protects against ongoing interference rather than isolated damaging events."}
+  ],
+  'nature-of-law':[
+    {q:"'English law does not adequately reflect principles of justice.' Critically evaluate.",
+     scaffold:"Intro: Define justice \u2014 formal, substantive, distributive, corrective (Rawls and Nozick in contrast).\nP1: Where law achieves justice \u2014 HRA 1998; equality legislation; criminal justice reforms.\nP2: Access to justice as a justice failure \u2014 LASPO 2012; litigants in person; wealth advantage.\nP3: Strict liability as a justice failure \u2014 punishment without fault (Gammon); moral objections.\nConclusion: English law achieves formal justice but substantive justice remains uneven \u2014 access and fault-based issues are the most significant failings.",
+     model:"Justice is not monolithic. Rawls' conception \u2014 rational persons behind a veil of ignorance would choose equal liberties and inequalities that benefit the least advantaged \u2014 offers a demanding benchmark. Against it, English law presents a mixed picture. The Human Rights Act 1998 embeds formal equality: the same rights apply regardless of wealth or status. Yet formal equality masks substantive injustice. LASPO 2012 removed most civil legal aid, meaning that a litigant's ability to enforce their rights in contract, housing, or employment now depends heavily on wealth. A Rawlsian analysis condemns this: rational people ignorant of their financial position would not choose a justice system where access depends on the ability to pay. The law is formally just; it is substantively deficient."},
+    {q:"'The boundary between law and morality is neither fixed nor clear.' Critically evaluate using examples from English law.",
+     scaffold:"Intro: Define law and morality; the dynamic relationship between them.\nP1: Where law and morality align \u2014 murder, theft, fraud; law codifies shared moral norms.\nP2: Where they diverge \u2014 euthanasia; R v R (moral change preceded legal reform); drug possession.\nP3: Mechanism of change \u2014 Hart-Devlin debate; Wolfenden Report; judicial creativity (R v R).\nConclusion: The boundary is inherently dynamic \u2014 Hart's harm principle offers the most principled basis for determining when law should intervene.",
+     model:"The relationship between law and morality is neither static nor simple. At times they converge: the prohibition on murder reflects a near-universal moral norm. At others, they diverge sharply. The criminalisation of homosexual acts, which persisted until the Sexual Offences Act 1967, enforced a majority moral view against a minority who caused no harm to others. The Wolfenden Report 1957 applied Mill's harm principle to conclude that private consensual acts should not be criminalised. Parliament followed, eventually. The contemporary debate over euthanasia presents the same tension: many consider assisted dying for the terminally ill to be morally permissible; the law treats it as murder. The boundary is not fixed \u2014 it moves as moral consensus shifts, though law often lags behind."},
+    {q:"'Fault is the only morally justifiable basis for imposing civil liability.' Critically evaluate.",
+     scaffold:"Intro: Define fault-based and strict liability; their different justifications.\nP1: Arguments for fault as the only basis \u2014 corrective justice; Kantian autonomy; criminal law analogy.\nP2: Arguments for strict liability \u2014 loss distribution; enterprise liability (those who profit bear the risk); deterrence even without proof of fault.\nP3: Examples of strict liability in English law \u2014 Rylands v Fletcher; OLA 1984; product liability (Consumer Protection Act 1987).\nConclusion: Fault is the morally preferred basis but strict liability is justified where defendants profit from an activity that creates risk \u2014 the two can coexist.",
+     model:"The fault principle has powerful moral support: it is unjust to hold a person liable for harm they neither intended nor could have foreseen. Corrective justice \u2014 the idea that liability restores the moral balance between wrongdoer and victim \u2014 presupposes fault. Yet strict liability has a distinct justification. Those who engage in inherently risky activities for profit are in the best position to take precautions against harm and to distribute the costs of accidents through insurance and pricing. The rule in Rylands v Fletcher [1868] and the Consumer Protection Act 1987 both reflect this enterprise liability theory. Neither approach is morally incoherent. Fault-based liability best fits personal relationships and individual acts; strict liability best fits commercial and industrial activities where risk is a known and manageable feature of the enterprise."},
+    {q:"'The courts have gone too far in making law through judicial creativity, undermining the doctrine of parliamentary sovereignty.' Critically evaluate.",
+     scaffold:"Intro: Define judicial creativity and parliamentary sovereignty; the tension between them.\nP1: Examples of judicial creativity \u2014 R v R [1991]; Shaw v DPP [1962]; common law development of negligence.\nP2: Arguments that courts have gone too far \u2014 unelected judges; retroactivity; unpredictability; usurping Parliament.\nP3: Arguments that judicial creativity is legitimate and necessary \u2014 Parliament cannot foresee all cases; gap-filling is inevitable; HRA 1998 requires it.\nConclusion: Judicial creativity is legitimate within limits; R v R is defensible; Shaw v DPP less so \u2014 the distinction lies in whether courts are developing or inventing law.",
+     model:"The tension between judicial creativity and parliamentary sovereignty is among the most fundamental in constitutional law. In R v R [1991], the House of Lords abolished the marital rape immunity, a rule traceable to Hale's 1736 treatise, without waiting for Parliament to act. This was unambiguously judicial law-making: the Lords changed the law retroactively. Lord Keith justified this as recognising 'the applicability of the principle that a wife does not by marriage irrevocably consent to intercourse' \u2014 but this was a principle the Lords themselves were articulating, not discovering. In Shaw v DPP [1962], the court created a new common law offence of conspiring to corrupt public morals, an exercise of creativity that plainly exceeded the boundary between developing and inventing law. The distinction that matters is not whether courts make law \u2014 they inevitably do \u2014 but whether the law they make is grounded in principle and predictable in application. R v R passes this test; Shaw v DPP does not."}
+  ],
+  'contract':[
+    {q:"'The doctrine of consideration is an outdated technicality that the courts are right to circumvent.' Critically evaluate.",
+     scaffold:"Intro: Define consideration (Currie v Misa); purpose \u2014 distinguish enforceable bargains from gratuitous promises.\nP1: Traditional doctrine \u2014 sufficiency not adequacy; existing duty rule creates harsh outcomes.\nP2: Williams v Roffey \u2014 practical benefit bypasses existing duty rule; academic critique (Chen-Wishart).\nP3: Law Commission recommendations (1937, 2001); civil law jurisdictions without consideration.\nConclusion: Doctrine increasingly strained \u2014 reform overdue; replace with reliance-based enforceability.",
+     model:"The doctrine of consideration is ancient in origin and awkward in application. Its purpose \u2014 to distinguish enforceable bargains from gratuitous promises \u2014 is legitimate. But the machinery through which it operates has become a source of injustice. The existing duty rule denied enforceability to promises that were commercially sensible and genuinely relied upon. Williams v Roffey Bros [1990] broke this deadlock by finding consideration in the practical benefit gained by the promisor. This was commercially pragmatic but theoretically incoherent: if performing an existing duty is consideration because it benefits the promisor, the doctrine loses its capacity to distinguish enforceable from unenforceable promises. The Law Commission has twice recommended reform. Parliament has twice declined to act. The result is a doctrine that is neither principled nor predictable."},
+    {q:"'The law of misrepresentation strikes an inadequate balance between the interests of contracting parties.' Critically evaluate.",
+     scaffold:"Intro: Define misrepresentation; three categories and their different remedies.\nP1: Fraudulent misrepresentation (Derry v Peek) \u2014 full rescission and damages; appropriate but high threshold.\nP2: Negligent misrepresentation (MA 1967 s.2(1)) \u2014 reverse burden; too onerous on defendants in commercial contexts?\nP3: Innocent misrepresentation \u2014 rescission only; bars can leave C without any remedy.\nConclusion: Law broadly fair but innocent misrepresentation too restrictive; s.2(1) creates commercial uncertainty.",
+     model:"The law of misrepresentation attempts to balance the interest of a party who has been misled against the interest of a party who may have made an honest mistake. The three-category structure \u2014 fraudulent, negligent, and innocent \u2014 reflects this graduated approach. Fraudulent misrepresentation (Derry v Peek [1889]) requires proof of dishonesty, a high threshold that protects defendants from unwarranted liability. The Misrepresentation Act 1967 s.2(1) reversed the burden for negligent misrepresentation, placing it on the defendant to prove reasonable grounds for belief \u2014 a significant commercial risk in negotiations involving complex facts. Most problematic is innocent misrepresentation: rescission is available but subject to bars that can leave a claimant without any remedy despite having been misled. The balance is imperfect."},
+    {q:"'The doctrine of frustration provides an inadequate mechanism for dealing with the effects of supervening events on contracts.' Critically evaluate.",
+     scaffold:"Intro: Define frustration; Davis Contractors test; Law Reform (Frustrated Contracts) Act 1943.\nP1: Narrow scope of frustration \u2014 courts reluctant to find frustration; self-induced frustration excluded; commercial hardship insufficient.\nP2: Effect of frustration \u2014 LR(FC)A 1943 better than common law (money recoverable) but incomplete (no recovery for non-money benefits).\nP3: Force majeure clauses as an alternative \u2014 parties can contract for supervening events; judicial treatment.\nConclusion: Frustration is too narrow and its consequences imperfectly regulated \u2014 reform of the 1943 Act and clearer guidance on force majeure would improve the law.",
+     model:"The doctrine of frustration discharges a contract where a supervening event, beyond the parties' control, renders performance radically different from what was agreed (Davis Contractors v Fareham [1956]). The courts have interpreted this test restrictively: mere difficulty, expense, or inconvenience is insufficient. In Tsakiroglou & Co v Noblee Thorl [1962], the closure of the Suez Canal did not frustrate a contract for the sale of groundnuts, despite adding significantly to the cost of performance. This restrictive approach protects contractual certainty but leaves parties exposed to events they could not have foreseen or insured against. The Law Reform (Frustrated Contracts) Act 1943 improved on the common law by allowing recovery of money paid and a quantum meruit for work done, but it does not address all cases \u2014 non-monetary benefits rendered before frustration remain inadequately covered. Force majeure clauses offer a private solution but require sophisticated negotiation. The law of frustration is functional but underpowered."},
+    {q:"'The Consumer Rights Act 2015 provides adequate protection for consumers against unfair contract terms.' Critically evaluate.",
+     scaffold:"Intro: CRA 2015 scope \u2014 B2C contracts; replacing Unfair Terms in Consumer Contracts Regulations 1999.\nP1: Key protections \u2014 automatically unfair terms (Schedule 2); fairness test (s.62); core terms exempt only if transparent and prominent.\nP2: Weaknesses \u2014 grey list not exhaustive; enforcement relies on consumer awareness; CMA enforcement limited.\nP3: Comparison with UCTA 1977 in B2B contexts \u2014 is the distinction coherent?\nConclusion: CRA 2015 is a significant improvement but depends on consumer awareness and regulatory enforcement that is often inadequate in practice.",
+     model:"The Consumer Rights Act 2015 consolidated and strengthened consumer protection against unfair terms, replacing the Unfair Terms in Consumer Contracts Regulations 1999. Its key innovation is the fairness test in s.62: a term is unfair if it causes a significant imbalance in the parties' rights and obligations to the detriment of the consumer, contrary to the requirement of good faith. Schedule 2 provides a non-exhaustive 'grey list' of terms that may be unfair. Certain core terms \u2014 the main subject matter and the price \u2014 are exempt from the fairness assessment, but only if they are transparent and prominent. This is a genuine advance on the old regime. However, the Act's effectiveness depends on consumers knowing their rights and being willing to challenge unfair terms, which is often not the case in practice. The Competition and Markets Authority has enforcement powers but limited resources. Statutory rights are only as good as their enforcement, and here the CRA 2015 falls short."}
+  ],
+};
+
+const TECH={
+  problem:{title:'Problem question technique',steps:[
+    {t:'Identify all issues',d:'Read twice. List every potential offence, claim, or legal issue — including minor ones. Examiner marks for spotting issues.'},
+    {t:'IRAC per issue',d:'Issue → Rule (state precisely) → Application (use the specific facts) → Conclusion. Never merge rule and application.'},
+    {t:'Cite statute AND case together',d:'"Under s.20 OAPA 1861, the AR requires wounding or GBH (R v Ireland [1997])…" — always both.'},
+    {t:'Apply to the specific facts',d:'Use the names and facts from the scenario. "Here, D struck V causing a broken arm — this satisfies GBH because…"'},
+    {t:'Defences last',d:'Establish primary liability first. Only then apply the defence\'s specific legal test to the facts.'},
+    {t:'Conclude each issue',d:'Give a clear, reasoned outcome per issue. Reach a position — do not hedge everything.'},
+  ],mistakes:['Stating law without applying it to facts','Missing a significant issue','Raising defences before establishing liability','Vague case references without stating the principle','No conclusion per issue']},
+  essay:{title:'Essay / evaluation technique',steps:[
+    {t:'Decode the command word',d:'Evaluate, discuss, critically analyse — each demands a different emphasis. Know exactly what is being asked.'},
+    {t:'Introduction: define and position',d:'Define key terms. Stake a position or map the tension you will resolve. Do not simply describe the law.'},
+    {t:'PEA+E per paragraph',d:'Point → Explanation → Authority (case/statute/theorist) → Evaluation. Link each paragraph back to the question.'},
+    {t:'Both sides — genuinely',d:'Arguments for AND against. Engage with counter-arguments substantively. This is where high marks are earned.'},
+    {t:'Precise authority',d:'Cases with full name and key principle. Theorists by full name (Devlin, Hart, Rawls). Statutes with year and section.'},
+    {t:'Conclusion: answer the question',d:'Reach a clear, justified conclusion. Directly answer the question set — do not merely summarise what you have said.'},
+  ],mistakes:['Describing law rather than evaluating it','Ignoring the command word','Assertions without authority','One-sided argument with no counter-argument','Weak or absent conclusion']},
+  short:{title:'Short answer technique',steps:[
+    {t:'Answer immediately',d:'State the rule, definition, or principle in the first sentence. No preamble.'},
+    {t:'One authority',d:'Add one case or statutory reference to support the point.'},
+    {t:'Brief elaboration',d:'One or two sentences if the mark allocation demands more detail.'},
+  ],mistakes:['Writing an essay for a 2–3 mark question','Irrelevant padding or scene-setting','Not answering the specific question asked']},
+};
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+
+let S = JSON.parse(localStorage.getItem('aimhigh_law_state') || 'null') || {
+  exam:null,sDays:5,sHrs:2,str:{},prog:{},ans:0,cards:0,
+  quizScores:[],sessions:[],status:{},mistakes:[],
+  srs:{},streak:0,lastStudy:null,onboarded:false,
+  sessionStats:{cards:0,quiz:0,answers:0},draftAns:''
+};
+function save(){ localStorage.setItem('aimhigh_law_state', JSON.stringify(S)) }
+function td(){ return new Date().toISOString().split('T')[0] }
+const SRS_INT = [1,3,7,14];
+function sKey(tid,i){ return tid+':'+i }
+function isDue(k){ const d=S.srs[k]; return !d || td()>=d.next }
+function schedule(k,r){ const n=new Date(); n.setDate(n.getDate()+SRS_INT[r]); S.srs[k]={interval:SRS_INT[r],next:n.toISOString().split('T')[0],r} }
+function countDue(){ let n=0; T.forEach(t=>(FC[t.id]||[]).forEach((_,i)=>{ if(isDue(sKey(t.id,i)))n++ })); return n }
+function updateStreak(){
+  const t=td();
+  if(S.lastStudy===t) return;
+  if(S.lastStudy){
+    const diff=Math.round((new Date(t)-new Date(S.lastStudy))/86400000);
+    S.streak = diff===1 ? (S.streak||0)+1 : 1;
+  } else { S.streak=1 }
+  S.lastStudy=t; save();
+}
+
+// ─── ONBOARDING ─────────────────────────────────────────────────────────────
+
+let obStep=1;
+function showOb(){
+  const el=document.getElementById('onboard'); el.style.display='flex';
+  const conf=document.getElementById('ob-strength');
+  conf.innerHTML=T.map(t=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <div style="font-size:12px;min-width:140px">${t.title}</div>
+    <select style="width:130px;font-size:12px" onchange="S.str['${t.id}']=this.value;save()">
+      <option value="medium" selected>Medium</option>
+      <option value="weak">Weak — prioritise</option>
+      <option value="strong">Strong — light touch</option>
+    </select>
+  </div>`).join('');
+}
+function nextOb(){ obStep=2; document.getElementById('ob1').classList.remove('on'); document.getElementById('ob2').classList.add('on') }
+function finishOb(){
+  const d=document.getElementById('ob-date').value;
+  if(d){ S.exam=d; S.sDays=parseInt(document.getElementById('ob-days').value||'5'); genSessions() }
+  S.onboarded=true; save(); closeOb(); renderDash();
+}
+function closeOb(){ document.getElementById('onboard').style.display='none'; S.onboarded=true; save() }
+
+// ─── NAVIGATION ─────────────────────────────────────────────────────────────
+
+function go(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.sni,.mni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  [...document.querySelectorAll('.sni,.mni')].filter(n=>n.getAttribute('onclick')===`go('${id}')`).forEach(n=>n.classList.add('on'));
+  updateStreak();
+  if(id==='dash') renderDash();
+  if(id==='topics') renderTopics();
+  if(id==='drill') initDrill();
+  if(id==='recall') initFC();
+  if(id==='quiz') initQz();
+  if(id==='scenario') initScn();
+  if(id==='essay') initEs();
+  if(id==='write') initWrite();
+  if(id==='mark') initMark();
+  if(id==='planner') renderPlanner();
+  if(id==='progress') renderProg();
+  updDueBadge();
+}
+function updDueBadge(){ const n=countDue(); const e=document.getElementById('sb-due'); if(e){e.textContent=n;e.style.display=n?'':'none'} }
+
+// ─── DASHBOARD ──────────────────────────────────────────────────────────────
+
+function dLeft(){ if(!S.exam) return null; return Math.max(0,Math.ceil((new Date(S.exam)-new Date())/86400000)) }
+function readiness(){
+  const cov=T.filter(t=>S.prog[t.id]==='done').length/T.length;
+  const qa=S.quizScores.length ? S.quizScores.slice(-10).reduce((a,b)=>a+b,0)/Math.min(10,S.quizScores.length) : 0;
+  const tot=T.reduce((n,t)=>n+(FC[t.id]||[]).length,0);
+  const done=Object.keys(S.srs).length;
+  return Math.round((cov*.35+qa*.4+(done/Math.max(tot,1))*.25)*100);
+}
+
+function renderDash(){
+  const d=dLeft();
+  document.getElementById('s-days').textContent = d!==null?d:'—';
+  document.getElementById('s-rdy').textContent = readiness()+'%';
+  document.getElementById('s-streak').textContent = S.streak||0;
+  document.getElementById('s-due').textContent = countDue();
+  document.getElementById('exam-top').textContent = d!==null?`${d} days to exam`:'';
+  document.getElementById('dash-sub').textContent = S.exam
+    ? `Exam: ${new Date(S.exam).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}`
+    : 'Set your exam date in the Planner.';
+  const ts=getTodaySess();
+  const tc=document.getElementById('today-card');
+  tc.innerHTML = ts
+    ? `<div class="lbl">Study today</div><div class="h3" style="margin-top:6px">${ts.label}</div><div class="xs muted mb">${ts.detail}</div><div class="bg"><button class="btn btn-p btn-s" onclick="openT('${ts.tid}')">Open topic →</button><button class="btn btn-g btn-s" onclick="markSess('${ts.key}')">Mark done</button></div>`
+    : `<div class="lbl">Study today</div><div class="muted sm" style="margin-top:6px">${S.exam?'No session today.':'Set your exam date in the Planner.'}</div>`;
+  const sc=S.sessionStats;
+  const ss=document.getElementById('sess-summary');
+  if(sc.cards>0||sc.quiz>0||sc.answers>0){
+    ss.style.display='';
+    ss.innerHTML=`<div class="session-summary"><div class="lbl mb">Today's session</div><div style="display:flex;gap:16px;flex-wrap:wrap"><div class="sm">⟳ <strong>${sc.cards}</strong> cards</div><div class="sm">✦ <strong>${sc.quiz}</strong> quiz Qs</div><div class="sm">✎ <strong>${sc.answers}</strong> answers</div></div></div>`;
+  } else ss.style.display='none';
+  const due=countDue();
+  const db=document.getElementById('due-banner');
+  if(due>0){ db.style.display=''; db.innerHTML=`<div class="lbl">Spaced repetition due</div><div class="sm mt">${due} card${due!==1?'s':''} due for review.</div><div class="bg"><button class="btn btn-grn btn-s" onclick="startSRS()">Review now</button></div>`}
+  else db.style.display='none';
+  renderQuickActs();
+  renderRadar();
+  document.getElementById('dash-topics').innerHTML=T.map(t=>`
+    <div class="card cp" onclick="openT('${t.id}')">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+        <span class="badge ${t.col}">${t.spec}</span>
+        ${S.prog[t.id]==='done'?'<span class="badge b-grn">✓</span>':''}
+      </div>
+      <div class="h3" style="margin-bottom:3px">${t.title}</div>
+      <div class="xs muted">${t.sum}</div>
+    </div>`).join('');
+}
+function getTodaySess(){ const t=new Date();t.setHours(0,0,0,0); return S.sessions.find(s=>{const d=new Date(s.date);d.setHours(0,0,0,0);return d.getTime()===t.getTime()&&!S.status[s.key]}) }
+function markSess(k){ S.status[k]='done'; save(); renderDash(); flash('Session marked complete!') }
+function renderQuickActs(){
+  const el=document.getElementById('quick-acts');
+  const due=countDue(); const weak=T.filter(t=>S.str[t.id]==='weak').slice(0,2);
+  let h='';
+  if(due>0) h+=`<div class="qa-row" onclick="startSRS()"><div><div class="sm" style="font-weight:600">Review ${due} due card${due!==1?'s':''}</div><div class="xs muted">Spaced repetition</div></div><span class="badge b-grn">Start →</span></div>`;
+  h+=`<div class="qa-row" onclick="go('drill')"><div><div class="sm" style="font-weight:600">Quick-fire drill</div><div class="xs muted">Case → principle in 10 mins</div></div><span class="badge b-pur">Drill →</span></div>`;
+  weak.forEach(t=>h+=`<div class="qa-row" onclick="openT('${t.id}')"><div><div class="sm" style="font-weight:600">${t.title}</div><div class="xs muted">Weak — prioritise</div></div><span class="badge b-red">Study →</span></div>`);
+  if(!h) h='<div class="xs muted">Set topic confidence in the Planner to see targeted actions here.</div>';
+  el.innerHTML=h;
+}
+function renderRadar(){
+  const el=document.getElementById('mastery-radar');
+  el.innerHTML=T.map(t=>{
+    const str=S.str[t.id]||'medium';
+    const col=str==='strong'?'var(--grn)':str==='medium'?'var(--amb)':'var(--red)';
+    const fcDone=Object.keys(S.srs).filter(k=>k.startsWith(t.id+':')).length;
+    const fcTot=(FC[t.id]||[]).length;
+    const pct=fcTot>0?Math.round(fcDone/fcTot*100):0;
+    return`<div class="rbar"><div class="xs muted" style="min-width:130px;cursor:pointer" onclick="openT('${t.id}')">${t.title}</div><div class="rbar-fill"><div class="rbar-in" style="width:${pct}%;background:${col}"></div></div><div class="xs" style="min-width:30px;text-align:right;color:${col}">${pct}%</div></div>`;
+  }).join('');
+}
+
+// ─── TOPICS ─────────────────────────────────────────────────────────────────
+
+function renderTopics(){
+  document.getElementById('topic-grid').innerHTML=T.map(t=>`
+    <div class="card cp" onclick="openT('${t.id}')">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+        <span class="badge ${t.col}">${t.spec}</span>
+        ${S.prog[t.id]==='done'?'<span class="badge b-grn">✓ Done</span>':''}
+      </div>
+      <div class="h2" style="margin-bottom:4px">${t.title}</div>
+      <div class="xs muted mb">${t.sum}</div>
+      <div class="xs" style="color:var(--t3)">${(FC[t.id]||[]).length} cards · ${(QZ[t.id]||[]).length} quiz Qs · ${(SCENARIOS[t.id]||[]).length} scenarios · ${(ESSAYS[t.id]||[]).length} essays</div>
+    </div>`).join('');
+}
+
+function openT(id){
+  const t=T.find(x=>x.id===id); if(!t) return;
+  document.getElementById('det-t').textContent=t.title;
+  document.getElementById('det-s').textContent=t.spec;
+  document.getElementById('det-body').innerHTML=`
+    <div class="bg mb">
+      <button class="btn btn-p btn-s" onclick="goFC('${t.id}')">Recall</button>
+      <button class="btn btn-g btn-s" onclick="goQz('${t.id}')">Quiz</button>
+      <button class="btn btn-g btn-s" onclick="goScn('${t.id}')">Scenario</button>
+      <button class="btn btn-g btn-s" onclick="goEs('${t.id}')">Essay</button>
+      <button class="btn btn-g btn-s" onclick="go('write')">Write</button>
+      <button class="btn btn-g btn-s" onclick="markDone('${t.id}')">Mark complete ✓</button>
+    </div>
+    <div class="h2 mt">Key subtopics</div>
+    ${t.sub.map(s=>`<div style="padding:6px 0;border-bottom:1px solid var(--bord);font-size:12.5px">• ${s}</div>`).join('')}
+    <div class="h2 mt">Leading cases</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">${t.cases.map(c=>`<div class="pill"><em>${c.n}</em><span style="color:var(--t2)">— ${c.k}</span></div>`).join('')}</div>
+    <div class="h2 mt">Key statutes</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">${t.stat.map(s=>`<div class="pill"><span>${s}</span></div>`).join('')}</div>
+    <div class="h2 mt">Evaluation points</div>
+    ${t.eval.map(e=>`<div style="padding:7px 11px;margin-bottom:5px;background:var(--s2);border-radius:var(--r);font-size:12.5px;border-left:3px solid var(--acc2)">${e}</div>`).join('')}
+    <div class="card hi mt"><div class="h3" style="color:var(--acc)">Exam technique</div><div class="sm" style="line-height:1.8">${t.tech}</div></div>`;
+  go('detail');
+}
+function markDone(id){ S.prog[id]='done'; save(); flash('Topic marked complete!'); go('topics') }
+function goFC(id){ go('recall'); setTimeout(()=>{ document.getElementById('fc-sel').value=id; loadFC() },50) }
+function goQz(id){ go('quiz'); setTimeout(()=>{ document.getElementById('qz-sel').value=id },50) }
+function goScn(id){ go('scenario'); setTimeout(()=>{ document.getElementById('scn-sel').value=id; loadScn() },50) }
+function goEs(id){ go('essay'); setTimeout(()=>{ document.getElementById('es-sel').value=id; loadEs() },50) }
+
+// ─── QUICK-FIRE DRILL ───────────────────────────────────────────────────────
+
+let drList=[],drI=0,drCorrect=0,drTotal=0,drInt=null,drSec=0,drRevealed=false;
+
+function initDrill(){
+  const s=document.getElementById('dr-sel');
+  if(!s.querySelector('option[value="legal-system"]'))
+    T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+}
+function startDrill(){
+  const tid=document.getElementById('dr-sel').value;
+  const pool = tid==='all'
+    ? T.flatMap(t=>(FC[t.id]||[]).filter(c=>c.type==='case').map(c=>({...c,tid:t.id,title:t.title})))
+    : (FC[tid]||[]).filter(c=>c.type==='case').map(c=>({...c,tid,title:T.find(t=>t.id===tid)?.title||tid}));
+  drList=pool.sort(()=>Math.random()-.5);
+  drI=0;drCorrect=0;drTotal=0;drSec=0;drRevealed=false;
+  document.getElementById('drill-setup').style.display='none';
+  document.getElementById('drill-run').style.display='';
+  document.getElementById('drill-end').style.display='none';
+  clearInterval(drInt);
+  drInt=setInterval(()=>{ drSec++; const m=Math.floor(drSec/60),s=String(drSec%60).padStart(2,'0'); document.getElementById('dr-timer').textContent=`${m}:${s}` },1000);
+  renderDrill();
+}
+function renderDrill(){
+  if(drI>=drList.length){ endDrill(); return }
+  const c=drList[drI];
+  document.getElementById('dr-topic-tag').textContent=c.title||'';
+  document.getElementById('dr-q').textContent=c.n||c.q;
+  document.getElementById('dr-reveal').style.display='none'; drRevealed=false;
+  document.getElementById('dr-cnt').textContent=`${drI+1} / ${drList.length}`;
+  document.getElementById('dr-btns').innerHTML=`<button class="btn btn-g" onclick="revealDrill()">Reveal →</button>`;
+}
+function revealDrill(){
+  if(drRevealed) return; drRevealed=true;
+  const c=drList[drI];
+  const rev=document.getElementById('dr-reveal'); rev.style.display=''; rev.textContent=c.k||c.a;
+  document.getElementById('dr-btns').innerHTML=`
+    <button class="btn btn-red btn-s" onclick="rateDrill(false)">Missed it</button>
+    <button class="btn btn-grn btn-s" onclick="rateDrill(true)">Got it</button>`;
+}
+function rateDrill(ok){
+  drTotal++; if(ok) drCorrect++;
+  schedule(sKey(drList[drI].tid,drI),ok?2:0);
+  S.cards++; S.sessionStats.cards=(S.sessionStats.cards||0)+1; save();
+  drI++; renderDrill();
+}
+function endDrill(){
+  clearInterval(drInt);
+  document.getElementById('drill-run').style.display='none';
+  document.getElementById('drill-end').style.display='';
+  const pct=drTotal>0?Math.round(drCorrect/drTotal*100):0;
+  document.getElementById('dr-fin').innerHTML=`<span style="color:${pct>=80?'var(--grn)':pct>=60?'var(--acc)':'var(--red)'}">${drCorrect}/${drTotal}</span>`;
+  document.getElementById('dr-fin-msg').textContent=`${drSec}s · ${pct>=80?'Excellent recall.':pct>=60?'Good — review what you missed.':'More drill needed on these cases.'}`;
+  updDueBadge();
+}
+
+// ─── RECALL + SRS ────────────────────────────────────────────────────────────
+
+let fcList=[],fcI=0,fcFlip=false;
+
+function initFC(){
+  const s=document.getElementById('fc-sel');
+  if(!s.querySelector('option[value="legal-system"]'))
+    T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+  loadFC();
+}
+function startSRS(){ go('recall'); setTimeout(()=>{ document.getElementById('fc-mode').value='srs'; document.getElementById('fc-sel').value='all'; loadFC() },50) }
+function loadFC(){
+  const tid=document.getElementById('fc-sel').value;
+  const mode=document.getElementById('fc-mode').value;
+  let cards=[];
+  const tids=tid==='all'?T.map(t=>t.id):[tid];
+  tids.forEach(t=>(FC[t]||[]).forEach((c,i)=>{
+    const k=sKey(t,i);
+    const inc=mode==='srs'?isDue(k):mode==='weak'?(S.srs[k]?.r||3)<2:mode==='case'?c.type==='case':mode==='statute'?c.type==='statute':true;
+    if(inc) cards.push({...c,tid:t,idx:i,key:k});
+  }));
+  if(!cards.length&&mode==='srs'){ cards=[]; tids.forEach(t=>(FC[t]||[]).forEach((c,i)=>cards.push({...c,tid:t,idx:i,key:sKey(t,i)}))); flash('All due cards reviewed!') }
+  fcList=cards.sort(()=>Math.random()-.5); fcI=0; fcFlip=false;
+  document.getElementById('srs-lbl').textContent=mode==='srs'?`${fcList.length} due`:'';
+  renderFC();
+}
+function renderFC(){
+  if(!fcList.length){ document.getElementById('fc-q').textContent='No cards for this filter.'; document.getElementById('fc-a').textContent=''; document.getElementById('fc-cnt').textContent='—'; return }
+  const c=fcList[fcI];
+  document.getElementById('fc-q').textContent=c.q;
+  document.getElementById('fc-a').textContent=c.a;
+  document.getElementById('fc-hint').textContent={case:'Case authority',statute:'Statute / legislation',principle:'Legal principle'}[c.type]||'';
+  document.getElementById('fc-cnt').textContent=`${fcI+1} / ${fcList.length}`;
+  document.getElementById('fcrd').classList.remove('flip'); fcFlip=false;
+  const d=S.srs[c.key];
+  document.getElementById('fc-badge').innerHTML=d?`<span class="badge b-grn" style="font-size:10px">Interval: ${d.interval}d</span>`:`<span class="badge b-pur" style="font-size:10px">New</span>`;
+  document.getElementById('fc-stats').textContent='';
+}
+function flipFC(){ fcFlip=!fcFlip; document.getElementById('fcrd').classList.toggle('flip',fcFlip) }
+function rateFC(r){
+  if(!fcList.length) return;
+  schedule(fcList[fcI].key,r);
+  S.cards++; S.sessionStats.cards=(S.sessionStats.cards||0)+1; save();
+  if(fcI<fcList.length-1){ fcI++; renderFC() }
+  else{ flash(countDue()>0?`Done. ${countDue()} still due.`:'All due cards reviewed!'); fcI=0; renderFC() }
+  updDueBadge();
+}
+function prevFC(){ if(fcI>0){ fcI--; renderFC() } }
+
+// ─── QUIZ ────────────────────────────────────────────────────────────────────
+
+let qzList=[],qzI=0,qzScore=0,qzDone=false,qzMiss=[];
+
+function initQz(){
+  const s=document.getElementById('qz-sel');
+  if(!s.querySelector('option[value="legal-system"]'))
+    T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+  document.getElementById('qz-setup').style.display='';
+  document.getElementById('qz-run').style.display='none';
+  document.getElementById('qz-res').style.display='none';
+}
+function startQz(){
+  const sel=document.getElementById('qz-sel').value;
+  const len=document.getElementById('qz-len').value;
+  let pool=[];
+  if(sel==='all') T.forEach(t=>pool.push(...(QZ[t.id]||[]).map(q=>({...q,_t:t.title}))));
+  else if(sel==='weak') T.filter(t=>S.str[t.id]==='weak').forEach(t=>pool.push(...(QZ[t.id]||[]).map(q=>({...q,_t:t.title}))));
+  else pool=(QZ[sel]||[]).map(q=>({...q,_t:T.find(t=>t.id===sel)?.title||''}));
+  if(!pool.length){ flash('No questions for this selection.'); return }
+  pool=pool.sort(()=>Math.random()-.5);
+  qzList=len==='all'?pool:pool.slice(0,parseInt(len));
+  qzI=0;qzScore=0;qzMiss=[];
+  document.getElementById('qz-setup').style.display='none';
+  document.getElementById('qz-run').style.display='';
+  document.getElementById('qz-res').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  if(qzI>=qzList.length){ showQzRes(); return }
+  qzDone=false; const q=qzList[qzI];
+  document.getElementById('qz-bar').style.width=Math.round(qzI/qzList.length*100)+'%';
+  document.getElementById('qz-cnt').textContent=`Q ${qzI+1} / ${qzList.length}`;
+  document.getElementById('qz-sc').textContent=`${qzScore}/${qzI}`;
+  document.getElementById('qz-ttag').textContent=q._t||'';
+  document.getElementById('qz-q').textContent=q.q;
+  document.getElementById('qz-nxt').style.display='none';
+  document.getElementById('qz-exp').style.display='none';
+  document.getElementById('qz-opts').innerHTML=q.o.map((o,i)=>`<button class="qo" onclick="ansQ(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+}
+function ansQ(i){
+  if(qzDone) return; qzDone=true; const q=qzList[qzI];
+  [...document.querySelectorAll('.qo')].forEach((b,j)=>{ b.disabled=true; if(j===q.a) b.classList.add('ok') });
+  if(i!==q.a){ document.querySelectorAll('.qo')[i].classList.add('no'); qzMiss.push(q) } else qzScore++;
+  document.getElementById('qz-exp').style.display=''; document.getElementById('qz-exp').textContent=q.e;
+  document.getElementById('qz-nxt').style.display='';
+  document.getElementById('qz-sc').textContent=`${qzScore}/${qzI+1}`;
+  S.sessionStats.quiz=(S.sessionStats.quiz||0)+1; save();
+}
+function nextQ(){ qzI++; renderQ() }
+function endQz(){ showQzRes() }
+function showQzRes(){
+  document.getElementById('qz-run').style.display='none';
+  document.getElementById('qz-res').style.display='';
+  const tot=Math.max(qzI,1); const pct=Math.round(qzScore/tot*100);
+  S.quizScores.push(pct/100); save();
+  document.getElementById('qz-fin').innerHTML=`<span style="color:${pct>=80?'var(--grn)':pct>=60?'var(--acc)':'var(--red)'}">${qzScore}/${tot}</span>`;
+  document.getElementById('qz-msg').textContent=pct>=80?'Strong. Move on.':pct>=60?'Good effort. Review what you missed.':'Revisit this topic before moving on.';
+  document.getElementById('qz-bd').innerHTML=qzMiss.length
+    ?`<div class="ms wk"><div class="st">Missed questions</div>${qzMiss.map(q=>`<div class="xs mb" style="line-height:1.6"><strong>Q:</strong> ${q.q}<br><span style="color:var(--t2)">${q.e}</span></div>`).join('')}</div>`:'';
+}
+
+// ─── SCENARIO ────────────────────────────────────────────────────────────────
+
+function initScn(){
+  const s=document.getElementById('scn-sel');
+  if(!s.children.length) T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+}
+function loadScn(){
+  const tid=document.getElementById('scn-sel').value;
+  const scns=SCENARIOS[tid]||[]; if(!scns.length){ flash('No scenarios for this topic yet.'); return }
+  const sc=scns[Math.floor(Math.random()*scns.length)];
+  document.getElementById('scn-txt').textContent=sc.text;
+  document.getElementById('scn-prompt').textContent=sc.prompt;
+  document.getElementById('scn-steps').innerHTML=sc.steps.map((s,i)=>`<div style="display:flex;gap:9px;margin-bottom:9px"><div style="width:20px;height:20px;background:var(--acc2);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${i+1}</div><div class="sm" style="line-height:1.7;padding-top:1px">${s}</div></div>`).join('');
+  document.getElementById('scn-body').style.display='';
+  document.getElementById('scn-ans').style.display='none';
+  window._scnModel=sc.model; window._scnTxt=sc.text;
+}
+function showScnA(){ const el=document.getElementById('scn-ans'); el.style.display=''; el.innerHTML=`<div class="card hi"><div class="h3" style="color:var(--acc)">Model answer structure</div><div class="sm" style="line-height:1.8">${window._scnModel}</div></div>` }
+function scnWrite(){ document.getElementById('w-qtxt').value=window._scnTxt||''; document.getElementById('w-qt').value='problem'; go('write'); setTimeout(()=>wTab('w'),60) }
+
+// ─── ESSAY BUILDER ────────────────────────────────────────────────────────────
+
+function initEs(){
+  const s=document.getElementById('es-sel');
+  if(!s.children.length) T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+}
+function loadEs(){
+  const tid=document.getElementById('es-sel').value;
+  const qs=ESSAYS[tid]||[]; if(!qs.length){ flash('No essay questions for this topic yet.'); return }
+  const eq=qs[Math.floor(Math.random()*qs.length)];
+  document.getElementById('es-q').textContent=eq.q;
+  document.getElementById('es-scaffold').innerHTML=eq.scaffold.split('\n').map(l=>`<div style="margin-bottom:3px">${l}</div>`).join('');
+  document.getElementById('es-model').innerHTML=eq.model||'<span class="muted">Model paragraph not yet available.</span>';
+  document.getElementById('es-body').style.display='';
+  window._essayQ=eq.q;
+  ['es-thesis','es-p1','es-p2','es-p3','es-conc'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value='' });
+}
+function esWrite(){
+  const parts=['es-thesis','es-p1','es-p2','es-p3','es-conc'].map(id=>document.getElementById(id)?.value||'').filter(Boolean);
+  if(!parts.length){ flash('Add at least one paragraph first.'); return }
+  document.getElementById('w-qtxt').value=window._essayQ||'';
+  document.getElementById('w-qt').value='essay';
+  document.getElementById('w-plan').value=parts.join('\n\n');
+  go('write'); setTimeout(()=>wTab('w'),60);
+}
+
+// ─── WRITE ────────────────────────────────────────────────────────────────────
+
+let tInt=null,tSec=0,tOn=false;
+
+function initWrite(){
+  const s=document.getElementById('w-top');
+  if(!s.children.length) T.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;s.appendChild(o)});
+  renderTech(); upHint();
+  const wa=document.getElementById('w-ans');
+  if(S.draftAns) wa.value=S.draftAns;
+  if(!wa._l){
+    wa.addEventListener('input',()=>{
+      upWC();
+      S.draftAns=wa.value; save();
+      const n=document.getElementById('autosave-note'); if(n){ n.textContent='Autosaved'; setTimeout(()=>{ if(n) n.textContent='' },2000) }
+    });
+    wa._l=true;
+  }
+}
+function wTab(id){
+  ['q','t','w'].forEach(t=>{ const el=document.getElementById('w-'+t); if(el) el.style.display=t===id?'':'none' });
+  document.querySelectorAll('#pg-write .tab').forEach((t,i)=>t.classList.toggle('on',['q','t','w'][i]===id));
+  if(id==='w'){
+    const qt=document.getElementById('w-qt').value;
+    document.getElementById('ws-meta').textContent=qt==='problem'?'Problem question':qt==='essay'?'Essay / evaluation':'Short answer';
+    document.getElementById('ws-prev').textContent=document.getElementById('w-qtxt').value||'No question set — add in Setup tab.';
+    upWC();
+  }
+}
+function upHint(){
+  const qt=document.getElementById('w-qt').value; const t=TECH[qt];
+  const el=document.getElementById('w-hint'); if(!el) return;
+  el.innerHTML=`<div class="st" style="color:var(--pur)">${t.title}</div>`+t.steps.map(s=>`<div style="margin-bottom:4px;font-size:12px"><strong>${s.t}:</strong> <span style="color:var(--t2)">${s.d}</span></div>`).join('');
+}
+function renderTech(){
+  const el=document.getElementById('w-t'); if(!el) return;
+  el.innerHTML=Object.values(TECH).map(t=>`<div class="card mb"><div class="h2">${t.title}</div>${t.steps.map((s,i)=>`<div style="display:flex;gap:9px;margin-bottom:8px"><div style="width:20px;height:20px;background:var(--acc);color:#111;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${i+1}</div><div><strong>${s.t}</strong><div class="xs muted" style="margin-top:2px;line-height:1.6">${s.d}</div></div></div>`).join('')}<hr><div class="xs muted mb" style="font-size:10px;text-transform:uppercase;letter-spacing:.07em">Common mistakes</div>${t.mistakes.map(m=>`<div class="xs" style="color:var(--red);margin-bottom:2px">✗ ${m}</div>`).join('')}</div>`).join('');
+}
+function upWC(){ const w=(document.getElementById('w-ans')?.value||'').trim().split(/\s+/).filter(Boolean).length; const el=document.getElementById('wc'); if(el) el.textContent=`${w} words` }
+function togTmr(){
+  if(tOn){ clearInterval(tInt); tOn=false; document.getElementById('tmr-btn').textContent='Start' }
+  else{ tOn=true; document.getElementById('tmr-btn').textContent='Stop'; tInt=setInterval(()=>{ tSec++; const m=String(Math.floor(tSec/60)).padStart(2,'0'),s=String(tSec%60).padStart(2,'0'); document.getElementById('tmr').textContent=`${m}:${s}` },1000) }
+}
+function toMark(){
+  const a=document.getElementById('w-ans')?.value; if(!a?.trim()){ flash('Write an answer first.'); return }
+  document.getElementById('mk-a').value=a;
+  document.getElementById('mk-q').value=document.getElementById('w-qtxt')?.value||'';
+  document.getElementById('mk-qt').value=document.getElementById('w-qt')?.value||'problem';
+  const tid=document.getElementById('w-top')?.value;
+  const mt=document.getElementById('mk-top'); if(mt&&tid) mt.value=tid;
+  S.ans++; S.sessionStats.answers=(S.sessionStats.answers||0)+1; save();
+  go('mark'); flash('Sent to Mark.');
+}
+function cpAns(){ navigator.clipboard.writeText(document.getElementById('w-ans')?.value||'').catch(()=>{}); flash('Copied.') }
+function dlAns(){
+  const t='AimHigh Law (H415) \u2014 Answer\n'+'='.repeat(24)+'\nQuestion: '+(document.getElementById('w-qtxt')?.value||'')+'\n\n'+(document.getElementById('w-ans')?.value||'');
+  const a=document.createElement('a'); a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(t); a.download='law-answer.txt'; a.click();
+}
+function mailAns(){
+  const s=encodeURIComponent('AimHigh Law (H415) \u2014 Answer for marking');
+  const b=encodeURIComponent('Question:\n'+(document.getElementById('w-qtxt')?.value||'')+'\n\nAnswer:\n'+(document.getElementById('w-ans')?.value||''));
+  window.open(`mailto:?subject=${s}&body=${b}`);
+}
+
+// ─── MARK ─────────────────────────────────────────────────────────────────────
+
+function initMark(){
+  const s=document.getElementById('mk-top');
+  if(s&&!s.querySelector('option[value="legal-system"]')){
+    const o=document.createElement('option'); o.value=''; o.textContent='Any topic'; s.appendChild(o);
+    T.forEach(t=>{ const o=document.createElement('option'); o.value=t.id; o.textContent=t.title; s.appendChild(o) });
+  }
+}
+function runMark(){
+  const a=document.getElementById('mk-a')?.value?.trim(); if(!a){ flash('Paste an answer first.'); return }
+  const qt=document.getElementById('mk-qt')?.value||'problem';
+  const marks=document.getElementById('mk-marks')?.value||'';
+  const tid=document.getElementById('mk-top')?.value||'';
+  const wc=a.split(/\s+/).filter(Boolean).length;
+  const topicT=tid?T.find(t=>t.id===tid):null;
+  const allCases=T.flatMap(t=>t.cases.map(c=>c.n.split('[')[0].trim().toLowerCase()));
+  const allStat=T.flatMap(t=>t.stat.map(s=>s.toLowerCase().substring(0,18)));
+  const cited=allCases.filter(n=>a.toLowerCase().includes(n.substring(0,Math.min(n.length,22)))).length;
+  const statCited=allStat.filter(s=>a.toLowerCase().includes(s.substring(0,14))).length;
+  const hasEval=/however|argue|critic|reform|although|nevertheless|on balance|evaluate|weakness|strength|disadvantage/i.test(a);
+  const hasConclude=/therefore|conclude|liable|not liable|breach|established|in conclusion|thus|accordingly/i.test(a);
+  const hasApply=/here|in this case|on the facts|the defendant|the claimant|applying/i.test(a);
+  const hasStruct=/firstly|secondly|furthermore|in addition|moreover|turning to|however/i.test(a);
+  let sc=0,str=[],wk=[],om=[],nx=[];
+  if(cited>=4){ sc+=3; str.push(`Excellent case citation — ${cited} cases.`) }
+  else if(cited>=2){ sc+=2; str.push(`Case citation present — ${cited} cases. Top answers use 4+.`) }
+  else if(cited>=1){ sc+=1; wk.push(`Only ${cited} case cited. Aim for 4+ per question.`) }
+  else om.push('No case authority detected. This severely limits the mark available.');
+  if(statCited>=2){ sc+=1; str.push('Good statutory authority cited.') }
+  else if(statCited>=1){ sc+=1; str.push('Statutory authority referenced.') }
+  else om.push('No statute cited. Reference relevant Acts with year and section.');
+  if(hasApply){ sc+=2; str.push('Application to the specific facts is present.') }
+  else if(qt==='problem'){ wk.push('No clear application to the scenario facts. Each rule must be applied explicitly to D, V, and the specific circumstances.'); sc-=1 }
+  if(hasStruct){ sc+=1; str.push('Structured development signposted.') }
+  else if(qt!=='short') wk.push('No structural signposting. Add firstly/however/in conclusion to help the examiner follow your argument.');
+  if(hasEval&&qt!=='short'){ sc+=1; str.push('Evaluative language present.') }
+  else if(qt==='essay') wk.push('Limited evaluation. Essays need you to weigh arguments and reach a justified position — not just describe the law.');
+  if(hasConclude){ sc+=1; str.push('A conclusion is present.') }
+  else om.push('No clear conclusion. State a reasoned outcome for each issue (problem) or for the essay as a whole.');
+  const expWC=qt==='short'?80:qt==='problem'?450:700;
+  if(wc<expWC*.6) wk.push(`Short answer (${wc} words vs ~${expWC} expected). Develop each point with application and authority.`);
+  else if(wc>=expWC*.8) str.push(`Good length — ${wc} words.`);
+  if(topicT){
+    const miss=topicT.cases.filter(c=>!a.toLowerCase().includes(c.n.split('[')[0].trim().toLowerCase().substring(0,18)));
+    if(miss.length) om.push(`Missing authorities for ${topicT.title}: ${miss.slice(0,3).map(c=>c.n).join('; ')}`);
+  }
+  const pct=Math.max(0,Math.min(sc/9,1));
+  const grade=pct>=.88?'A*':pct>=.77?'A':pct>=.66?'B':pct>=.55?'C':pct>=.44?'D':'E';
+  const gc=pct>=.77?'var(--grn)':pct>=.55?'var(--acc)':'var(--red)';
+  nx.push('State the legal rule then immediately apply it to the specific facts — never separate them.');
+  if(cited<3) nx.push('Add at least two more case authorities — name, key outcome, and the principle it establishes.');
+  if(qt==='essay'&&!hasEval) nx.push('Add a paragraph weighing arguments critically — address counter-arguments and reach a justified position.');
+  else if(qt==='problem'&&!hasApply) nx.push('For each rule, add a sentence explicitly applying it to the named parties and facts of the scenario.');
+  else nx.push("Review this topic's flashcards and quiz to reinforce the missing authorities.");
+  document.getElementById('mk-in').style.display='none';
+  document.getElementById('mk-out').style.display='';
+  document.getElementById('mk-grade').innerHTML=`<span style="color:${gc}">${grade}</span>`;
+  document.getElementById('mk-sum').textContent=`${wc} words · ${cited} cases · ${statCited} statutes${marks?' · '+marks+' marks available':''}`;
+  const fmt=items=>items.map(s=>`<div class="sm mb" style="line-height:1.6">${s}</div>`).join('')||'<div class="xs muted">None identified.</div>';
+  document.getElementById('mk-str').innerHTML=fmt(str);
+  document.getElementById('mk-wk').innerHTML=fmt(wk);
+  document.getElementById('mk-om').innerHTML=fmt(om);
+  document.getElementById('mk-nx').innerHTML=nx.slice(0,3).map((s,i)=>`<div class="sm mb" style="line-height:1.6"><strong>${i+1}.</strong> ${s}</div>`).join('');
+  document.getElementById('mk-note').textContent=`Heuristic marking framework. For full AI marking, paste your answer into Claude with: "Mark this OCR H415 Law ${qt} on ${topicT?.title||'this topic'} and give detailed feedback." Word count: ${wc}.`;
+  window._fb=`Grade: ${grade}\nStrengths: ${str.join('; ')}\nWeaknesses: ${wk.join('; ')}\nOmissions: ${om.join('; ')}\nPriority actions: ${nx.slice(0,3).join('; ')}`;
+}
+function resetMark(){ document.getElementById('mk-in').style.display=''; document.getElementById('mk-out').style.display='none' }
+function logMistake(){
+  const wk=document.getElementById('mk-wk')?.innerText||'';
+  const om=document.getElementById('mk-om')?.innerText||'';
+  S.mistakes.push({date:td(),note:(wk+' | '+om).substring(0,220)});
+  save(); flash('Logged to mistake log.');
+}
+function cpFb(){ navigator.clipboard.writeText(window._fb||'').catch(()=>{}); flash('Feedback copied.') }
+
+// ─── PLANNER ──────────────────────────────────────────────────────────────────
+
+function renderPlanner(){
+  const conf=document.getElementById('pl-conf');
+  conf.innerHTML=T.map(t=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="min-width:150px;font-size:12.5px">${t.title}</div><select style="width:150px" onchange="S.str['${t.id}']=this.value;save()"><option value="weak" ${(S.str[t.id]||'medium')==='weak'?'selected':''}>Weak — prioritise</option><option value="medium" ${(S.str[t.id]||'medium')==='medium'?'selected':''}>Medium</option><option value="strong" ${(S.str[t.id]||'medium')==='strong'?'selected':''}>Strong — light touch</option></select></div>`).join('');
+  if(S.exam){ document.getElementById('pl-dt').value=S.exam; document.getElementById('pl-days').value=S.sDays; document.getElementById('pl-hrs').value=S.sHrs; if(!S.sessions.length) genSessions(); showPlanOut() }
+}
+function buildPlan(){
+  S.exam=document.getElementById('pl-dt')?.value;
+  S.sDays=parseInt(document.getElementById('pl-days')?.value||'5');
+  S.sHrs=parseFloat(document.getElementById('pl-hrs')?.value||'2');
+  if(!S.exam){ flash('Set an exam date first.'); return }
+  save(); genSessions(); showPlanOut();
+}
+function genSessions(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const exam=new Date(S.exam);exam.setHours(0,0,0,0);
+  const tList=[];T.forEach(t=>{const w=S.str[t.id]==='weak'?4:S.str[t.id]==='strong'?1:2;for(let i=0;i<w;i++)tList.push(t)});
+  const types=['Learn & notes','Cases & statutes','Flashcards','Quiz','Write answer','Scenario practice','Recall & review'];
+  const sessions=[];let d=new Date(today),ti=0,si=0;
+  while(d<exam){
+    const dow=d.getDay();
+    const study=S.sDays>=7?true:S.sDays>=6?dow!==0:S.sDays>=5?dow!==0&&dow!==6:S.sDays>=4?dow!==0&&dow!==6&&dow!==3:dow===1||dow===3||dow===5;
+    if(study){
+      const t=tList[ti%tList.length];const type=types[si%types.length];
+      const key=d.toISOString().split('T')[0]+'-'+t.id;
+      sessions.push({date:d.toISOString().split('T')[0],tid:t.id,label:`${type}: ${t.title}`,detail:`${S.sHrs}h`,key});
+      ti++;si++;
+    }
+    d=new Date(d.getTime()+86400000);
+  }
+  sessions.filter(s=>new Date(s.date)>=new Date(exam.getTime()-7*86400000)).forEach(s=>s.label=s.label.replace(/^[^:]+/,'Mixed practice'));
+  S.sessions=sessions; save();
+}
+function showPlanOut(){
+  document.getElementById('pl-setup').style.display='none';
+  document.getElementById('pl-out').style.display='';
+  const d=dLeft();
+  document.getElementById('pl-cd').textContent=d!==null?`${d} days`:'—';
+  document.getElementById('pl-sub').textContent=S.exam?`until ${new Date(S.exam).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`:'';
+  renderCal();
+}
+function showSetup(){ document.getElementById('pl-setup').style.display=''; document.getElementById('pl-out').style.display='none' }
+function renderCal(){
+  const cal=document.getElementById('pl-cal');
+  if(!S.sessions.length){ cal.innerHTML='<div class="xs muted">No sessions — build plan above.</div>'; return }
+  const today=new Date();today.setHours(0,0,0,0);
+  const examD=S.exam?new Date(S.exam):null; if(examD) examD.setHours(0,0,0,0);
+  const first=new Date(S.sessions[0].date); const last=new Date(S.sessions[S.sessions.length-1].date);
+  let ws=new Date(first); const dw=ws.getDay(); ws.setDate(ws.getDate()+(dw===0?-6:1-dw));
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  let html=`<div class="wrow"><div></div>${DAYS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>`;
+  let w=new Date(ws);
+  while(w<=last){
+    const wl=w.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    html+=`<div class="wrow"><div class="wl">${wl}</div>`;
+    for(let i=0;i<7;i++){
+      const d=new Date(w.getTime()+i*86400000); const ds=d.toISOString().split('T')[0];
+      const sess=S.sessions.find(s=>s.date===ds);
+      const isToday=d.getTime()===today.getTime(); const isPast=d<today;
+      const isExam=examD&&d.getTime()===examD.getTime();
+      const done=sess&&S.status[sess.key]; const over=sess&&isPast&&!done;
+      const cls=isExam?'dc hs':done?'dc dn':over?'dc od':sess?`dc hs${isToday?' td':''}`:'dc';
+      const short=sess?sess.tid.replace('legal-system','Legal').replace('criminal-law','Crim').replace('law-making','Making').replace('nature-of-law','Nature').replace('contract','Contract').replace('tort','Tort'):'';
+      const tp=sess?sess.label.split(':')[0].substring(0,7):'';
+      html+=`<div class="${cls}" onclick="${sess?`togS('${sess.key}')`:''}">
+        ${isExam?'<div style="color:var(--acc);font-weight:700;font-size:8px">EXAM</div>':''}
+        ${sess?`<div style="color:var(--acc);font-size:8px;font-weight:600">${short}</div><div style="color:var(--t3);font-size:8px">${tp}</div>`:''}
+        ${done?'<div style="color:var(--grn);font-size:8px">✓</div>':''}
+      </div>`;
+    }
+    html+='</div>'; w=new Date(w.getTime()+7*86400000);
+  }
+  cal.innerHTML=html;
+}
+function togS(k){ S.status[k]?delete S.status[k]:S.status[k]='done'; save(); renderCal() }
+
+// ─── PROGRESS ─────────────────────────────────────────────────────────────────
+
+function renderProg(){
+  const cov=T.filter(t=>S.prog[t.id]==='done').length;
+  const qa=S.quizScores.length?Math.round(S.quizScores.reduce((a,b)=>a+b,0)/S.quizScores.length*100):0;
+  document.getElementById('pr-t').textContent=`${cov}/${T.length}`;
+  document.getElementById('pr-a').textContent=S.ans;
+  document.getElementById('pr-c').textContent=S.cards;
+  document.getElementById('pr-q').textContent=qa+'%';
+  const allCards=T.flatMap(t=>(FC[t.id]||[]).map((_,i)=>({key:sKey(t.id,i),title:t.title})));
+  document.getElementById('pr-heat').innerHTML=`<div class="heat-grid">${allCards.map(c=>{const d=S.srs[c.key];const col=!d?'var(--s3)':d.r>=3?'var(--grn)':d.r>=2?'var(--amb)':d.r>=1?'#c8634b':'var(--red)';return`<div class="heat-cell" style="background:${col}" title="${c.title}"></div>`}).join('')}</div><div class="xs muted" style="margin-top:4px">Each cell = one flashcard. Green = easy, red = needs work, grey = not yet seen.</div>`;
+  document.getElementById('pr-list').innerHTML=T.map(t=>{
+    const done=S.prog[t.id]==='done'; const str=S.str[t.id]||'medium';
+    const fcLen=(FC[t.id]||[]).length; const fcDone=Object.keys(S.srs).filter(k=>k.startsWith(t.id+':')).length;
+    const pct=fcLen>0?Math.round(fcDone/fcLen*100):0;
+    return`<div class="card" style="margin-bottom:7px;padding:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div><span class="badge ${done?'b-grn':'b-amb'}" style="margin-right:7px">${done?'✓ Done':'In progress'}</span><strong>${t.title}</strong></div><span class="badge ${str==='weak'?'b-red':str==='strong'?'b-grn':'b-amb'}">${str}</span></div><div style="display:flex;align-items:center;gap:8px"><div class="pb" style="flex:1"><div class="pf" style="width:${pct}%"></div></div><div class="xs muted">${fcDone}/${fcLen} cards</div></div></div>`;
+  }).join('');
+  const mis=S.mistakes.slice(-5).reverse();
+  document.getElementById('pr-mis').innerHTML=mis.length?mis.map(m=>`<div class="card" style="margin-bottom:6px;padding:11px"><div class="xs muted mb">${m.date}</div><div class="sm">${m.note}</div></div>`).join(''):'<div class="xs muted">No mistakes logged yet. Use the Mark mode "Log mistake" button.</div>';
+  const weak=T.filter(t=>S.str[t.id]==='weak');
+  document.getElementById('pr-weak').innerHTML=weak.length?weak.map(t=>`<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px"><span class="badge b-red">Weak</span><strong>${t.title}</strong><button class="btn btn-g btn-xs" onclick="openT('${t.id}')">Study →</button></div>`).join(''):'<div class="xs muted">No weak areas marked — set topic confidence in the Planner.</div>';
+}
+function resetAll(){
+  if(!confirm('Reset all progress? This cannot be undone.')) return;
+  S={exam:null,sDays:5,sHrs:2,str:{},prog:{},ans:0,cards:0,quizScores:[],sessions:[],status:{},mistakes:[],srs:{},streak:0,lastStudy:null,onboarded:false,sessionStats:{cards:0,quiz:0,answers:0},draftAns:''};
+  save(); renderProg(); flash('Progress reset.');
+}
+
+// ─── FLASH + INIT ─────────────────────────────────────────────────────────────
+
+function flash(m){ const e=document.getElementById('fl');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2400) }
+
+updateStreak();
+renderDash();
+renderTopics();
+updDueBadge();
+if(!S.onboarded) setTimeout(showOb,500);
+</script>
+</body>
+</html>
